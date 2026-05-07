@@ -1,6 +1,6 @@
 """
-Vision Transformer (ViT) 核心实现
-参考: An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale
+Vision Transformer (ViT) Core Implementation
+Reference: An Image is Worth 16x16 Words
 """
 
 import torch
@@ -9,7 +9,7 @@ import math
 
 
 class PatchEmbedding(nn.Module):
-    """将图像分割成 patches 并进行线性投影"""
+    """Split image into patches and project to embeddings"""
 
     def __init__(self, img_size=224, patch_size=16, in_channels=3, embed_dim=768):
         super().__init__()
@@ -17,7 +17,6 @@ class PatchEmbedding(nn.Module):
         self.patch_size = patch_size
         self.n_patches = (img_size // patch_size) ** 2
 
-        # Conv2d 等效于将每个 patch 展平后线性投影
         self.proj = nn.Conv2d(
             in_channels, embed_dim,
             kernel_size=patch_size,
@@ -25,22 +24,20 @@ class PatchEmbedding(nn.Module):
         )
 
     def forward(self, x):
-        # x: [B, C, H, W]
-        x = self.proj(x)  # [B, embed_dim, n_patches_h, n_patches_w]
-        x = x.flatten(2)  # [B, embed_dim, n_patches]
-        x = x.transpose(1, 2)  # [B, n_patches, embed_dim]
+        x = self.proj(x)
+        x = x.flatten(2).transpose(1, 2)
         return x
 
 
 class MultiHeadAttention(nn.Module):
-    """多头自注意力机制"""
+    """Multi-Head Self-Attention"""
 
     def __init__(self, embed_dim=768, num_heads=8, dropout=0.1):
         super().__init__()
         self.embed_dim = embed_dim
         self.num_heads = num_heads
         self.head_dim = embed_dim // num_heads
-        assert self.head_dim * num_heads == embed_dim, "embed_dim 必须能被 num_heads 整除"
+        assert self.head_dim * num_heads == embed_dim
 
         self.qkv = nn.Linear(embed_dim, embed_dim * 3)
         self.proj = nn.Linear(embed_dim, embed_dim)
@@ -62,7 +59,7 @@ class MultiHeadAttention(nn.Module):
 
 
 class MLP(nn.Module):
-    """MLP 块 (FFN)"""
+    """MLP Block (FFN)"""
 
     def __init__(self, embed_dim=768, hidden_dim=3072, dropout=0.1):
         super().__init__()
@@ -81,7 +78,7 @@ class MLP(nn.Module):
 
 
 class TransformerBlock(nn.Module):
-    """Transformer 编码器块"""
+    """Transformer Encoder Block"""
 
     def __init__(self, embed_dim=768, num_heads=8, mlp_ratio=4.0, dropout=0.1):
         super().__init__()
@@ -97,7 +94,7 @@ class TransformerBlock(nn.Module):
 
 
 class VisionTransformer(nn.Module):
-    """完整的 Vision Transformer 模型"""
+    """Complete Vision Transformer Model"""
 
     def __init__(
         self,
@@ -115,23 +112,18 @@ class VisionTransformer(nn.Module):
         self.patch_embed = PatchEmbedding(img_size, patch_size, in_channels, embed_dim)
         n_patches = self.patch_embed.n_patches
 
-        # 可学习的 [CLS] token
         self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dim))
-        # 位置编码
         self.pos_embed = nn.Parameter(torch.zeros(1, n_patches + 1, embed_dim))
         self.pos_drop = nn.Dropout(p=dropout)
 
-        # Transformer 编码器 blocks
         self.blocks = nn.ModuleList([
             TransformerBlock(embed_dim, num_heads, mlp_ratio, dropout)
             for _ in range(depth)
         ])
         self.norm = nn.LayerNorm(embed_dim)
 
-        # 分类头
         self.head = nn.Linear(embed_dim, num_classes)
 
-        # 权重初始化
         nn.init.trunc_normal_(self.cls_token, std=0.02)
         nn.init.trunc_normal_(self.pos_embed, std=0.02)
         self.apply(self._init_weights)
@@ -148,24 +140,17 @@ class VisionTransformer(nn.Module):
     def forward(self, x):
         B = x.shape[0]
 
-        # Patch embedding
-        x = self.patch_embed(x)  # [B, n_patches, embed_dim]
-
-        # 添加 [CLS] token
+        x = self.patch_embed(x)
         cls_tokens = self.cls_token.expand(B, -1, -1)
-        x = torch.cat([cls_tokens, x], dim=1)  # [B, n_patches+1, embed_dim]
+        x = torch.cat([cls_tokens, x], dim=1)
 
-        # 添加位置编码
         x = x + self.pos_embed
         x = self.pos_drop(x)
 
-        # 通过 Transformer blocks
         for block in self.blocks:
             x = block(x)
 
         x = self.norm(x)
-
-        # 取 [CLS] token 用于分类
         cls_token_final = x[:, 0]
         logits = self.head(cls_token_final)
 
@@ -197,12 +182,10 @@ def vit_base(patch_size=16, num_classes=1000):
 
 
 if __name__ == "__main__":
-    # 测试 ViT 模型
     model = vit_tiny(num_classes=10)
-    print(f"模型参数量: {sum(p.numel() for p in model.parameters()):,}")
+    print("Model params: {:,}".format(sum(p.numel() for p in model.parameters())))
 
-    # 模拟输入
     x = torch.randn(2, 3, 224, 224)
     output = model(x)
-    print(f"输入形状: {x.shape}")
-    print(f"输出形状: {output.shape}")
+    print("Input: {}".format(x.shape))
+    print("Output: {}".format(output.shape))

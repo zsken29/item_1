@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 问答助手</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AI 问答助手</h1>
+            <p>MiniMax M2.7 模型驱动</p>
+        </div>
+        <div class="chat-area" id="chatArea">
+            <div class="message ai">
+                <div class="avatar ai">🤖</div>
+                <div class="bubble">你好！我是你的 AI 问答助手。有什么我可以帮助你的吗？</div>
+            </div>
+        </div>
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="输入您的问题..." onkeypress="handleEnter(event)">
+            <button id="sendBtn" onclick="sendMessage()">发送</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='chat.js') }}"></script>
+</body>
+</html>

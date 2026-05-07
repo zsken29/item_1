@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>热点视界 | HotSpot - 实时热搜聚合</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #FF4757;
+            --secondary: #5352ED;
+            --success: #2ED573;
+            --warning: #FFA502;
+            --info: #1E90FF;
+            --dark: #1A1A2E;
+            --darker: #16213E;
+            --darkest: #0F0F1A;
+            --light: #F5F5F7;
+            --gray: #8B8B9A;
+            --border: rgba(255,255,255,0.08);
+            --glass: rgba(255,255,255,0.03);
+            --glass-hover: rgba(255,255,255,0.06);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            background: var(--darkest);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* 背景动画 */
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-gradient {
+            position: absolute;
+            width: 600px; height: 600px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .bg-gradient-1 {
+            background: var(--primary);
+            top: -200px; right: -100px;
+        }
+
+        .bg-gradient-2 {
+            background: var(--secondary);
+            bottom: -200px; left: -100px;
+            animation-delay: -5s;
+        }
+
+        .bg-gradient-3 {
+            background: var(--info);
+            top: 50%; left: 50%;
+            width: 400px; height: 400px;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -50px) scale(1.1); }
+            50% { transform: translate(-30px, 30px) scale(0.95); }
+            75% { transform: translate(30px, 50px) scale(1.05); }
+        }
+
+        /* 顶部导航 */
+        .header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(15, 15, 26, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--light);
+        }
+
+        .logo-icon {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .logo-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--warning));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 搜索框 */
+        .search-container {
+            position: relative;
+            width: 400px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            color: var(--light);
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--glass-hover);
+        }
+
+        .search-input::placeholder { color: var(--gray); }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem; top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            pointer-events: none;
+        }
+
+        .search-icon svg { width: 18px; height: 18px; }
+
+        /* 搜索结果 */
+        .search-results {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            left: 0; right: 0;
+            background: var(--dark);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .search-results.active { display: block; }
+
+        .search-result-item {
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .search-result-item:last-child { border-bottom: none; }
+        .search-result-item:hover { background: var(--glass-hover); }
+
+        .search-result-rank {
+            font-size: 0.8rem;
+            color: var(--gray);
+            min-width: 24px;
+        }
+
+        .search-result-title {
+            flex: 1;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .search-result-platform {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            background: var(--glass);
+            border-radius: 4px;
+            color: var(--gray);
+        }
+
+        .search-empty {
+            padding: 2rem;
+            text-align: center;
+            color: var(--gray);
+        }
+
+        /* 头部按钮 */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-btn {
+            padding: 0.5rem 1rem;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            color: var(--light);
+            font-size: 0.85rem;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .header-btn:hover {
+            background: var(--glass-hover);
+            border-color: var(--primary);
+        }
+
+        .header-btn svg { width: 16px; height: 16px; }
+
+        .refresh-btn { position: relative; }
+        .refresh-btn.loading svg { animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .update-time {
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+
+        /* 主内容区 */
+        .main {
+            padding-top: 90px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        /* 统计卡片 */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+            .search-container { width: 250px; }
+        }
+
+        @media (max-width: 600px) {
+            .stats-bar { grid-template-columns: 1fr; }
+            .header-inner { padding: 0 1rem; }
+            .logo-text { display: none; }
+            .search-container { width: 150px; }
+        }
+
+        .stat-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.25rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--warning));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: 0.25rem;
+        }
+
+        /* 平台选择器 */
+        .platform-tabs {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .platform-tab {
+            padding: 0.6rem 1.25rem;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            color: var(--gray);
+            font-size: 0.85rem;
+            font-family: inherit;
+            cursor: pointer;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .platform-tab:hover { background: var(--glass-hover); }
+
+        .platform-tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .platform-tab .badge {
+            padding: 0.15rem 0.4rem;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            font-size: 0.7rem;
+        }
+
+        /* 热搜列表 */
+        .hotsearch-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .hotsearch-container { grid-template-columns: 1fr; }
+        }
+
+        .hotsearch-list {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .hotsearch-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .hotsearch-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .hotsearch-title-icon {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .hotsearch-title-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .hotsearch-title-count {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .hotsearch-items {
+            padding: 0.5rem;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .hotsearch-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.85rem 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .hotsearch-item:hover { background: var(--glass-hover); }
+
+        .hotsearch-rank {
+            min-width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 6px;
+            background: var(--glass);
+        }
+
+        .hotsearch-rank.top-3 {
+            background: linear-gradient(135deg, var(--primary), var(--warning));
+            color: white;
+        }
+
+        .hotsearch-rank.new {
+            background: var(--success);
+            color: white;
+            font-size: 0.7rem;
+        }
+
+        .hotsearch-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .hotsearch-title-row {
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hotsearch-links {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.4rem;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .hotsearch-item:hover .hotsearch-links {
+            opacity: 1;
+        }
+
+        .hotsearch-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.25rem 0.6rem;
+            font-size: 0.7rem;
+            border-radius: 4px;
+            background: rgba(0,212,255,0.1);
+            color: #00d4ff;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .hotsearch-link-btn:hover {
+            background: rgba(0,212,255,0.25);
+        }
+
+        .hotsearch-link-btn.fallback {
+            background: rgba(255,165,2,0.1);
+            color: #FFA502;
+        }
+
+        .hotsearch-link-btn.fallback:hover {
+            background: rgba(255,165,2,0.25);
+        }
+
+        .hotsearch-link-btn svg {
+            width: 10px;
+            height: 10px;
+        }
+
+        .hotsearch-tags {
+            display: flex;
+            gap: 0.4rem;
+            margin-top: 0.3rem;
+        }
+
+        .hotsearch-tag {
+            padding: 0.15rem 0.4rem;
+            font-size: 0.65rem;
+            border-radius: 4px;
+        }
+
+        .hotsearch-tag.hot { background: rgba(255,71,87,0.2); color: var(--primary); }
+        .hotsearch-tag.new { background: rgba(46,213,115,0.2); color: var(--success); }
+        .hotsearch-tag.focus { background: rgba(255,165,2,0.2); color: var(--warning); }
+
+        .hotsearch-value {
+            font-size: 0.8rem;
+            color: var(--gray);
+            white-space: nowrap;
+        }
+
+        .hotsearch-actions {
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .hotsearch-item:hover .hotsearch-actions { opacity: 1; }
+
+        .action-btn {
+            width: 28px; height: 28px;
+            border-radius: 6px;
+            border: none;
+            background: var(--glass);
+            color: var(--gray);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover { background: var(--primary); color: white; }
+        .action-btn.bookmarked { color: var(--primary); }
+        .action-btn svg { width: 14px; height: 14px; }
+
+        /* 侧边栏 */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .sidebar-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.25rem;
+        }
+
+        .sidebar-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-title svg { width: 18px; height: 18px; stroke: var(--primary); }
+
+        /* 热门话题 */
+        .trending-topics {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .trending-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .trending-item:hover { background: var(--glass-hover); }
+
+        .trending-rank {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary);
+            min-width: 20px;
+        }
+
+        .trending-info { flex: 1; }
+        .trending-title { font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .trending-link { color: var(--light); text-decoration: none; }
+        .trending-link:hover { color: var(--primary); }
+        .trending-platform { font-size: 0.7rem; color: var(--gray); margin-top: 0.2rem; }
+
+        /* 收藏列表 */
+        .bookmark-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .bookmark-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.6rem;
+            background: var(--glass);
+            border-radius: 10px;
+            gap: 0.5rem;
+        }
+
+        .bookmark-item-text {
+            flex: 1;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .bookmark-item-remove {
+            width: 20px; height: 20px;
+            border: none;
+            background: none;
+            color: var(--gray);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .bookmark-item-remove:hover { background: rgba(255,71,87,0.2); color: var(--primary); }
+        .bookmark-item-remove svg { width: 12px; height: 12px; }
+
+        .bookmark-empty {
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        /* 评论区域 */
+        .comment-input {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .comment-input input {
+            flex: 1;
+            padding: 0.6rem 1rem;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            color: var(--light);
+            font-family: inherit;
+            font-size: 0.85rem;
+        }
+
+        .comment-input input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .comment-input button {
+            padding: 0.6rem 1.2rem;
+            background: var(--primary);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-family: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .comment-input button:hover { background: #ff2d43; }
+
+        .comments-list {
+            max-height: 150px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .comment-item {
+            padding: 0.6rem;
+            background: var(--glass);
+            border-radius: 10px;
+            font-size: 0.85rem;
+        }
+
+        .comment-item-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.3rem;
+        }
+
+        .comment-author { color: var(--info); font-size: 0.75rem; }
+        .comment-time { color: var(--gray); font-size: 0.7rem; }
+        .comment-text { color: var(--light); line-height: 1.5; }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem; right: 2rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .toast {
+            padding: 1rem 1.5rem;
+            background: var(--dark);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .toast-icon { font-size: 1.2rem; }
+        .toast-message { font-size: 0.9rem; }
+
+        .toast.success { border-color: var(--success); }
+        .toast.success .toast-icon { color: var(--success); }
+
+        .toast.error { border-color: var(--primary); }
+        .toast.error .toast-icon { color: var(--primary); }
+
+        /* 加载状态 */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+        }
+
+        .loading-spinner {
+            width: 40px; height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray);
+        }
+
+        .empty-state svg {
+            width: 64px; height: 64px;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .empty-state p { font-size: 0.95rem; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border);
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        footer a { color: var(--primary); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <!-- 背景动画 -->
+    <div class="bg-animation">
+        <div class="bg-gradient bg-gradient-1"></div>
+        <div class="bg-gradient bg-gradient-2"></div>
+        <div class="bg-gradient bg-gradient-3"></div>
+    </div>
+
+    <!-- 顶部导航 -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <div class="logo-icon">🔥</div>
+                <span class="logo-text">热点视界</span>
+            </a>
+
+            <div class="search-container">
+                <span class="search-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                    </svg>
+                </span>
+                <input type="text" class="search-input" id="searchInput" placeholder="搜索热搜话题...">
+                <div class="search-results" id="searchResults"></div>
+            </div>
+
+            <div class="header-actions">
+                <button class="header-btn refresh-btn" id="refreshBtn" title="刷新热搜">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                        <path d="M3 3v5h5"/>
+                        <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+                        <path d="M16 16h5v5"/>
+                    </svg>
+                    <span>刷新</span>
+                </button>
+                <span class="update-time" id="updateTime">--:--:--</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容 -->
+    <main class="main">
+        <!-- 统计卡片 -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-value" id="totalTopics">--</div>
+                <div class="stat-label">实时话题</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalPlatforms">9</div>
+                <div class="stat-label">数据平台</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalBookmarks">0</div>
+                <div class="stat-label">我的收藏</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalComments">0</div>
+                <div class="stat-label">互动评论</div>
+            </div>
+        </div>
+
+        <!-- 平台选择 -->
+        <div class="platform-tabs" id="platformTabs">
+            <button class="platform-tab active" data-platform="all">
+                全部平台 <span class="badge" id="allBadge">0</span>
+            </button>
+        </div>
+
+        <!-- 热搜列表 -->
+        <div class="hotsearch-container">
+            <div class="hotsearch-list">
+                <div class="hotsearch-header">
+                    <div class="hotsearch-title">
+                        <div class="hotsearch-title-icon" id="currentPlatformIcon">📮</div>
+                        <div>
+                            <div class="hotsearch-title-text" id="currentPlatformName">微博热搜</div>
+                            <div class="hotsearch-title-count" id="hotsearchCount">加载中...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hotsearch-items" id="hotsearchItems">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 侧边栏 -->
+            <div class="sidebar">
+                <!-- 热门话题 -->
+                <div class="sidebar-card">
+                    <div class="sidebar-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                        </svg>
+                        全网最热
+                    </div>
+                    <div class="trending-topics" id="trendingTopics">
+                        <div class="empty-state">
+                            <p>暂无数据</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 收藏列表 -->
+                <div class="sidebar-card">
+                    <div class="sidebar-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        我的收藏
+                    </div>
+                    <div class="bookmark-list" id="bookmarkList">
+                        <div class="bookmark-empty">还没有收藏</div>
+                    </div>
+                </div>
+
+                <!-- 互动区 -->
+                <div class="sidebar-card">
+                    <div class="sidebar-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        实时互动
+                    </div>
+                    <div class="comment-input">
+                        <input type="text" id="commentInput" placeholder="说点什么...">
+                        <button onclick="addComment()">发送</button>
+                    </div>
+                    <div class="comments-list" id="commentsList"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <footer>
+        热点视界 HotSpot - 实时热搜聚合平台 - 数据每5分钟自动更新
+    </footer>
+
+    <script>
+        // ============ 全局变量 ============
+        const API_PORTS = [8888, 8000];
+        let API_BASE = '';
+        let allData = null;
+        let currentPlatform = 'all';
+        let platforms = [];
+        let bookmarks = [];
+        let comments = [];
+        let searchTimeout = null;
+
+        // ============ 初始化 ============
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('Page loaded, initializing...');
+            await initAPI();
+            await loadData();
+            setupEventListeners();
+            startAutoRefresh();
+        });
+
+        // ============ API 初始化 ============
+        async function initAPI() {
+            for (const port of API_PORTS) {
+                try {
+                    const response = await fetch(`http://localhost:${port}/api/platforms`);
+                    if (response.ok) {
+                        API_BASE = `http://localhost:${port}/api`;
+                        console.log(`API connected: ${API_BASE}`);
+                        return;
+                    }
+                } catch (e) {
+                    console.log(`Port ${port} failed:`, e.message);
+                }
+            }
+            console.error('No API available');
+            showToast('无法连接后端服务', 'error');
+        }
+
+        // ============ 数据加载 ============
+        async function loadData() {
+            if (!API_BASE) {
+                await initAPI();
+                if (!API_BASE) return;
+            }
+
+            // 加载平台列表
+            try {
+                const platformRes = await fetch(`${API_BASE}/platforms`);
+                platforms = await platformRes.json();
+                renderPlatformTabs();
+            } catch (e) {
+                console.error('Load platforms failed:', e);
+            }
+
+            // 加载热搜数据
+            try {
+                const hotRes = await fetch(`${API_BASE}/hotsearch`);
+                allData = await hotRes.json();
+                console.log('Hotsearch data loaded:', allData);
+                renderStats();
+                renderPlatformTabs();
+                renderHotsearch();
+                renderTrending();
+            } catch (e) {
+                console.error('Load hotsearch failed:', e);
+                showToast('热搜加载失败', 'error');
+            }
+
+            // 加载收藏
+            try {
+                const bmRes = await fetch(`${API_BASE}/bookmarks`);
+                const bmData = await bmRes.json();
+                bookmarks = bmData.bookmarks || [];
+                renderBookmarks();
+            } catch (e) {
+                console.error('Load bookmarks failed:', e);
+            }
+
+            // 加载评论
+            try {
+                const cmRes = await fetch(`${API_BASE}/comments?limit=20`);
+                const cmData = await cmRes.json();
+                comments = cmData.comments || [];
+                renderComments();
+            } catch (e) {
+                console.error('Load comments failed:', e);
+            }
+        }
+
+        // ============ 渲染函数 ============
+        function renderStats() {
+            if (!allData) return;
+
+            document.getElementById('totalTopics').textContent = allData.total_items || 0;
+            document.getElementById('allBadge').textContent = allData.total_items || 0;
+
+            if (allData.update_time) {
+                const time = new Date(allData.update_time);
+                document.getElementById('updateTime').textContent = time.toLocaleTimeString();
+            }
+        }
+
+        function renderPlatformTabs() {
+            if (!platforms.length) return;
+
+            const container = document.getElementById('platformTabs');
+
+            // 更新"全部"标签的数量
+            const allTab = container.querySelector('[data-platform="all"]');
+            if (allTab) {
+                const badge = allTab.querySelector('.badge');
+                if (badge && allData) {
+                    badge.textContent = allData.total_items || 0;
+                }
+            }
+
+            // 添加平台标签
+            platforms.forEach(p => {
+                if (!container.querySelector(`[data-platform="${p.id}"]`)) {
+                    const btn = document.createElement('button');
+                    btn.className = 'platform-tab';
+                    btn.dataset.platform = p.id;
+                    btn.innerHTML = `${p.icon} ${p.name_cn} <span class="badge">${p.item_count || 0}</span>`;
+                    btn.onclick = () => switchPlatform(p.id);
+                    container.appendChild(btn);
+                }
+            });
+        }
+
+        function switchPlatform(platformId) {
+            currentPlatform = platformId;
+
+            // 更新标签样式
+            document.querySelectorAll('.platform-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.platform === platformId);
+            });
+
+            renderHotsearch();
+        }
+
+        function renderHotsearch() {
+            const container = document.getElementById('hotsearchItems');
+
+            if (!allData || !allData.platforms) {
+                container.innerHTML = '<div class="empty-state"><p>暂无数据</p></div>';
+                return;
+            }
+
+            let items = [];
+            let platformName = '全网热搜';
+            let platformIcon = '🔥';
+
+            if (currentPlatform === 'all') {
+                // 合并所有平台的数据
+                allData.platforms.forEach(p => {
+                    if (p.items) {
+                        p.items.forEach(item => {
+                            items.push({...item, platformName: p.platform_name, platformIcon: p.platform_icon});
+                        });
+                    }
+                });
+                items = items.slice(0, 50);
+            } else {
+                // 单个平台
+                const platformData = allData.platforms.find(p => p.platform === currentPlatform);
+                if (platformData && platformData.items) {
+                    items = platformData.items.map(item => ({
+                        ...item,
+                        platformName: platformData.platform_name,
+                        platformIcon: platformData.platform_icon
+                    }));
+                    platformName = platformData.platform_name;
+                    platformIcon = platformData.platform_icon;
+                }
+            }
+
+            if (!items.length) {
+                container.innerHTML = '<div class="empty-state"><p>暂无数据</p></div>';
+                return;
+            }
+
+            // 更新标题
+            document.getElementById('currentPlatformIcon').textContent = platformIcon;
+            document.getElementById('currentPlatformName').textContent = platformName;
+            document.getElementById('hotsearchCount').textContent = `${items.length} 条热搜`;
+
+            // 渲染列表
+            container.innerHTML = items.map((item, index) => {
+                const rankClass = index < 3 ? 'top-3' : (item.is_new ? 'new' : '');
+                const rankText = item.is_new ? '新' : (index + 1);
+                const isBookmarked = bookmarks.some(b => b.topic === item.title);
+                const hotUrl = item.url || '#';
+                const fallbackUrl = item.fallback_url || '';
+
+                const tags = [];
+                if (item.is_hot) tags.push('<span class="hotsearch-tag hot">热</span>');
+                if (item.is_new) tags.push('<span class="hotsearch-tag new">新</span>');
+                if (item.is_focus) tags.push('<span class="hotsearch-tag focus">关</span>');
+                if (item.category) tags.push(`<span class="hotsearch-tag" style="background:rgba(30,144,255,0.2);color:var(--info)">${item.category}</span>`);
+
+                return `
+                    <div class="hotsearch-item">
+                        <div class="hotsearch-rank ${rankClass}">${rankText}</div>
+                        <div class="hotsearch-content">
+                            <div class="hotsearch-title-row">
+                                ${escapeHtml(item.title)}
+                            </div>
+                            ${tags.length ? `<div class="hotsearch-tags">${tags.join('')}</div>` : ''}
+                            <div class="hotsearch-links">
+                                <a href="${hotUrl}" target="_blank" class="hotsearch-link-btn" onclick="event.stopPropagation()" title="原始链接">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                    平台
+                                </a>
+                                ${fallbackUrl ? `<a href="${fallbackUrl}" target="_blank" class="hotsearch-link-btn fallback" onclick="event.stopPropagation()" title="百度搜索">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                                    搜索
+                                </a>` : ''}
+                            </div>
+                        </div>
+                        ${item.hot_value ? `<div class="hotsearch-value">${item.hot_value}</div>` : ''}
+                        <div class="hotsearch-actions">
+                            <button class="action-btn ${isBookmarked ? 'bookmarked' : ''}"
+                                    onclick="toggleBookmark('${escapeAttr(item.title)}', '${item.platform}')"
+                                    title="${isBookmarked ? '取消收藏' : '收藏'}">
+                                <svg viewBox="0 0 24 24" fill="${isBookmarked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderTrending() {
+            const container = document.getElementById('trendingTopics');
+
+            if (!allData || !allData.top_topics || !allData.top_topics.length) {
+                container.innerHTML = '<div class="empty-state"><p>暂无数据</p></div>';
+                return;
+            }
+
+            container.innerHTML = allData.top_topics.slice(0, 8).map((topic, index) => {
+                const p = platforms.find(x => x.id === topic.platform);
+                const topicUrl = topic.url || '#';
+                return `
+                    <div class="trending-item">
+                        <div class="trending-rank">${index + 1}</div>
+                        <div class="trending-info">
+                            <a href="${topicUrl}" target="_blank" class="trending-link">
+                                <div class="trending-title">${escapeHtml(topic.title)}</div>
+                            </a>
+                            <div class="trending-platform">${p?.icon || ''} ${p?.name_cn || topic.platform} - 第${topic.rank}名</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderBookmarks() {
+            const container = document.getElementById('bookmarkList');
+            document.getElementById('totalBookmarks').textContent = bookmarks.length;
+
+            if (!bookmarks.length) {
+                container.innerHTML = '<div class="bookmark-empty">还没有收藏，点击爱心添加</div>';
+                return;
+            }
+
+            container.innerHTML = bookmarks.map(b => {
+                const p = platforms.find(x => x.id === b.platform);
+                return `
+                    <div class="bookmark-item">
+                        <span class="bookmark-item-text">${p?.icon || ''} ${escapeHtml(b.topic)}</span>
+                        <button class="bookmark-item-remove" onclick="removeBookmark('${escapeAttr(b.topic)}', '${b.platform}')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderComments() {
+            const container = document.getElementById('commentsList');
+            document.getElementById('totalComments').textContent = comments.length;
+
+            if (!comments.length) {
+                container.innerHTML = '<div class="empty-state" style="padding:1rem"><p>还没有评论</p></div>';
+                return;
+            }
+
+            container.innerHTML = comments.slice(0, 5).map(c => {
+                const time = new Date(c.created_at);
+                return `
+                    <div class="comment-item">
+                        <div class="comment-item-header">
+                            <span class="comment-author">网友</span>
+                            <span class="comment-time">${formatTime(time)}</span>
+                        </div>
+                        <div class="comment-text">${escapeHtml(c.comment)}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============ 事件处理 ============
+        function setupEventListeners() {
+            // 刷新按钮
+            document.getElementById('refreshBtn').addEventListener('click', async () => {
+                const btn = document.getElementById('refreshBtn');
+                btn.classList.add('loading');
+
+                try {
+                    await fetch(`${API_BASE}/refresh`, {method: 'POST'});
+                    await loadData();
+                    showToast('热搜已刷新', 'success');
+                } catch (e) {
+                    showToast('刷新失败', 'error');
+                }
+
+                setTimeout(() => btn.classList.remove('loading'), 1000);
+            });
+
+            // 搜索
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                const query = e.target.value.trim();
+
+                if (!query) {
+                    document.getElementById('searchResults').classList.remove('active');
+                    return;
+                }
+
+                searchTimeout = setTimeout(() => searchTopics(query), 300);
+            });
+
+            searchInput.addEventListener('focus', () => {
+                if (searchInput.value.trim()) {
+                    document.getElementById('searchResults').classList.add('active');
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-container')) {
+                    document.getElementById('searchResults').classList.remove('active');
+                }
+            });
+
+            // 评论
+            document.getElementById('commentInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') addComment();
+            });
+        }
+
+        async function searchTopics(query) {
+            if (!allData) return;
+
+            // 在当前数据中搜索
+            const results = [];
+            allData.platforms.forEach(p => {
+                if (p.items) {
+                    p.items.forEach(item => {
+                        if (item.title.toLowerCase().includes(query.toLowerCase())) {
+                            results.push({...item, platform: p.platform, platformName: p.platform_name});
+                        }
+                    });
+                }
+            });
+
+            const container = document.getElementById('searchResults');
+
+            if (!results.length) {
+                container.innerHTML = '<div class="search-empty">未找到相关话题</div>';
+                container.classList.add('active');
+                return;
+            }
+
+            container.innerHTML = results.slice(0, 10).map((item, index) => `
+                <div class="search-result-item" onclick="selectSearch('${escapeAttr(item.title)}', '${item.platform}')">
+                    <span class="search-result-rank">${index + 1}</span>
+                    <span class="search-result-title">${escapeHtml(item.title)}</span>
+                    <span class="search-result-platform">${item.platformName || item.platform}</span>
+                </div>
+            `).join('');
+
+            container.classList.add('active');
+        }
+
+        function selectSearch(title, platform) {
+            document.getElementById('searchResults').classList.remove('active');
+            document.getElementById('searchInput').value = '';
+            switchPlatform(platform);
+        }
+
+        // ============ 收藏功能 ============
+        async function toggleBookmark(title, platform) {
+            const exists = bookmarks.some(b => b.topic === title);
+
+            if (exists) {
+                await removeBookmark(title, platform);
+            } else {
+                try {
+                    const res = await fetch(`${API_BASE}/bookmarks`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({topic: title, platform: platform, url: ''})
+                    });
+
+                    if (res.ok) {
+                        bookmarks.unshift({topic: title, platform: platform});
+                        renderBookmarks();
+                        renderHotsearch();
+                        showToast('已收藏', 'success');
+                    }
+                } catch (e) {
+                    showToast('收藏失败', 'error');
+                }
+            }
+        }
+
+        async function removeBookmark(title, platform) {
+            try {
+                const res = await fetch(`${API_BASE}/bookmarks?topic=${encodeURIComponent(title)}&platform=${platform}`, {
+                    method: 'DELETE'
+                });
+
+                if (res.ok) {
+                    bookmarks = bookmarks.filter(b => !(b.topic === title && b.platform === platform));
+                    renderBookmarks();
+                    renderHotsearch();
+                    showToast('已取消收藏', 'success');
+                }
+            } catch (e) {
+                showToast('取消失败', 'error');
+            }
+        }
+
+        // ============ 评论功能 ============
+        async function addComment() {
+            const input = document.getElementById('commentInput');
+            const text = input.value.trim();
+
+            if (!text) return;
+
+            try {
+                const res = await fetch(`${API_BASE}/comments`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({topic: '全网话题', platform: 'hotspot', comment: text})
+                });
+
+                if (res.ok) {
+                    comments.unshift({comment: text, created_at: new Date().toISOString()});
+                    renderComments();
+                    input.value = '';
+                    showToast('评论成功', 'success');
+                }
+            } catch (e) {
+                showToast('评论失败', 'error');
+            }
+        }
+
+        // ============ 工具函数 ============
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <span class="toast-icon">${type === 'success' ? '✓' : type === 'error' ? '✕' : 'ℹ'}</span>
+                <span class="toast-message">${message}</span>
+            `;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function escapeAttr(text) {
+            return text.replace(/'/g, "\\'").replace(/"/g, '\\"');
+        }
+
+        function formatTime(date) {
+            const now = new Date();
+            const diff = now - date;
+
+            if (diff < 60000) return '刚刚';
+            if (diff < 3600000) return `${Math.floor(diff / 60000)}分钟前`;
+            if (diff < 86400000) return `${Math.floor(diff / 3600000)}小时前`;
+            return date.toLocaleDateString();
+        }
+
+        // ============ 自动刷新 ============
+        function startAutoRefresh() {
+            setInterval(async () => {
+                await loadData();
+            }, 300000); // 5分钟
+        }
+    </script>
+</body>
+</html>

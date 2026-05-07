@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>极光观测站 | Aurora Watch</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌌</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --aurora-green: #00ff88;
+            --aurora-cyan: #00d4ff;
+            --aurora-purple: #bf5fff;
+            --aurora-pink: #ff6b9d;
+            --aurora-blue: #4a90ff;
+            --aurora-yellow: #ffdd00;
+            --aurora-red: #ff4444;
+            --bg-dark: #0a0a0f;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --bg-card-hover: rgba(255, 255, 255, 0.06);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.5);
+            --text-muted: rgba(255, 255, 255, 0.3);
+        }
+
+        html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--aurora-cyan) transparent; }
+        html::-webkit-scrollbar { width: 6px; }
+        html::-webkit-scrollbar-track { background: transparent; }
+        html::-webkit-scrollbar-thumb { background: linear-gradient(var(--aurora-cyan), var(--aurora-purple)); border-radius: 3px; }
+
+        body {
+            font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            cursor: none;
+            line-height: 1.6;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 20px; height: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            position: fixed; pointer-events: none; z-index: 10000;
+            transition: transform 0.15s ease, background 0.3s ease;
+            mix-blend-mode: difference;
+        }
+        .cursor-dot {
+            width: 4px; height: 4px;
+            background: white; border-radius: 50%;
+            position: fixed; pointer-events: none; z-index: 10001;
+            mix-blend-mode: difference;
+        }
+        .cursor.hover { transform: scale(2); background: rgba(0, 255, 136, 0.2); border-color: var(--aurora-green); }
+
+        /* Aurora Background */
+        .aurora-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden; z-index: 0; opacity: 0.6;
+        }
+        .aurora {
+            position: absolute; width: 200%; height: 200%;
+            top: -50%; left: -50%; filter: blur(100px);
+        }
+        .aurora-1 {
+            background: radial-gradient(ellipse at 20% 30%, rgba(0, 255, 136, 0.5) 0%, transparent 50%);
+            animation: aurora-drift-1 20s ease-in-out infinite;
+        }
+        .aurora-2 {
+            background: radial-gradient(ellipse at 70% 50%, rgba(191, 95, 255, 0.4) 0%, transparent 50%);
+            animation: aurora-drift-2 25s ease-in-out infinite; mix-blend-mode: screen;
+        }
+        .aurora-3 {
+            background: radial-gradient(ellipse at 50% 70%, rgba(0, 212, 255, 0.35) 0%, transparent 50%);
+            animation: aurora-drift-3 30s ease-in-out infinite; mix-blend-mode: color-dodge;
+        }
+        @keyframes aurora-drift-1 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(15%, 10%) rotate(10deg); }
+        }
+        @keyframes aurora-drift-2 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-10%, 15%) rotate(-5deg); }
+        }
+        @keyframes aurora-drift-3 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(5%, 20%); }
+        }
+
+        #particles {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(10,10,15,0.95), transparent);
+            backdrop-filter: blur(10px);
+        }
+        .nav-logo {
+            display: flex; align-items: center; gap: 0.75rem;
+            text-decoration: none; color: var(--text-primary);
+        }
+        .nav-logo svg { width: 28px; height: 28px; }
+        .nav-logo span { font-size: 1.1rem; font-weight: 600; letter-spacing: 0.05em; }
+
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-link {
+            color: var(--text-secondary); text-decoration: none;
+            font-size: 0.85rem; font-weight: 500; letter-spacing: 0.05em;
+            transition: color 0.3s ease; position: relative;
+        }
+        .nav-link::after {
+            content: ''; position: absolute; bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: linear-gradient(90deg, var(--aurora-cyan), var(--aurora-purple));
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover { color: var(--text-primary); }
+        .nav-link:hover::after { width: 100%; }
+
+        .nav-actions { display: flex; gap: 1rem; align-items: center; }
+
+        .notification-btn {
+            position: relative;
+            padding: 0.5rem; background: var(--bg-card);
+            border: 1px solid var(--border-color); border-radius: 10px;
+            color: var(--text-secondary); cursor: none;
+            transition: all 0.3s ease;
+        }
+        .notification-btn:hover { background: var(--bg-card-hover); color: var(--aurora-cyan); }
+        .notification-btn svg { width: 20px; height: 20px; display: block; }
+        .notification-btn.active { color: var(--aurora-green); border-color: var(--aurora-green); }
+        .notification-badge {
+            position: absolute; top: -4px; right: -4px;
+            width: 10px; height: 10px; background: var(--aurora-red);
+            border-radius: 50%; display: none;
+        }
+        .notification-btn.active .notification-badge { display: block; }
+
+        /* Content */
+        .content { position: relative; z-index: 1; }
+        section { padding: 6rem 2rem; max-width: 1400px; margin: 0 auto; }
+        section.full-width { max-width: none; padding-left: 0; padding-right: 0; }
+
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-tag {
+            display: inline-block; padding: 0.5rem 1.5rem;
+            background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(191,95,255,0.1));
+            border: 1px solid rgba(0,212,255,0.2); border-radius: 50px;
+            font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em;
+            text-transform: uppercase; color: var(--aurora-cyan); margin-bottom: 1rem;
+        }
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 700; margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--aurora-cyan));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .section-desc { color: var(--text-secondary); font-size: 1rem; max-width: 500px; margin: 0 auto; }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            padding: 2rem; position: relative;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.5rem 1rem; background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 50px;
+            font-size: 0.75rem; font-weight: 500; color: var(--aurora-cyan);
+            margin-bottom: 1.5rem; opacity: 0; animation: fadeInUp 0.8s ease 0.3s forwards;
+        }
+        .hero-badge::before {
+            content: ''; width: 6px; height: 6px; background: var(--aurora-green);
+            border-radius: 50%; animation: blink 1.5s ease-in-out infinite;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 700; line-height: 1.1;
+            margin-bottom: 1rem; opacity: 0; animation: fadeInUp 0.8s ease 0.5s forwards;
+        }
+        .hero-title span {
+            display: block;
+            background: linear-gradient(135deg, var(--aurora-green) 0%, var(--aurora-cyan) 50%, var(--aurora-purple) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem; color: var(--text-secondary); max-width: 500px;
+            line-height: 1.8; margin-bottom: 2.5rem;
+            opacity: 0; animation: fadeInUp 0.8s ease 0.7s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Live Forecast */
+        #forecast { padding-top: 5rem; }
+        .forecast-container { display: grid; grid-template-columns: 1fr 1.2fr; gap: 2rem; }
+        @media (max-width: 900px) { .forecast-container { grid-template-columns: 1fr; } }
+
+        .forecast-main {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 24px; padding: 2rem; text-align: center;
+        }
+
+        .kp-display { margin-bottom: 1.5rem; }
+        .kp-value {
+            font-size: 6rem; font-weight: 700; line-height: 1;
+            -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .kp-label { font-size: 1rem; color: var(--text-secondary); margin-top: 0.5rem; }
+
+        .kp-status {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.6rem 1.2rem; border-radius: 50px;
+            font-weight: 600; font-size: 0.85rem; margin-bottom: 1.5rem;
+        }
+        .kp-status svg { width: 16px; height: 16px; }
+
+        .kp-bar {
+            height: 8px; background: rgba(255,255,255,0.1);
+            border-radius: 4px; margin-top: 1rem;
+            overflow: hidden; position: relative;
+        }
+        .kp-bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+        .kp-bar-markers {
+            display: flex; justify-content: space-between; margin-top: 0.5rem;
+            font-size: 0.7rem; color: var(--text-muted);
+        }
+
+        .forecast-meta {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;
+            margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);
+        }
+        .meta-item { text-align: center; padding: 0.75rem; background: rgba(255,255,255,0.02); border-radius: 10px; }
+        .meta-value { font-size: 1.3rem; font-weight: 600; color: var(--aurora-cyan); }
+        .meta-label { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; }
+
+        .forecast-hours {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 24px; padding: 2rem;
+        }
+        .forecast-hours h3 {
+            font-size: 1rem; margin-bottom: 1.5rem;
+            display: flex; align-items: center; gap: 0.5rem; color: var(--aurora-cyan);
+        }
+        .forecast-hours h3 svg { width: 18px; height: 18px; }
+
+        .hours-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
+        @media (max-width: 600px) { .hours-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        .hour-item {
+            text-align: center; padding: 1rem 0.5rem;
+            background: rgba(255,255,255,0.02); border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        .hour-item:hover { background: rgba(0, 212, 255, 0.1); transform: translateY(-3px); }
+        .hour-time { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+        .hour-kp { font-size: 1.2rem; font-weight: 600; }
+        .hour-bar {
+            height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px;
+            margin-top: 0.5rem; overflow: hidden;
+        }
+        .hour-bar-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+
+        /* Best Time Card */
+        .best-time-card {
+            margin-top: 1.5rem; padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(0,255,136,0.08), rgba(0,212,255,0.05));
+            border: 1px solid rgba(0,255,136,0.2); border-radius: 16px;
+        }
+        .best-time-card h4 {
+            font-size: 0.85rem; color: var(--aurora-green); margin-bottom: 0.75rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .best-time-card h4 svg { width: 16px; height: 16px; }
+        .countdown {
+            display: flex; gap: 1rem; justify-content: center;
+        }
+        .countdown-item {
+            text-align: center;
+        }
+        .countdown-value {
+            font-size: 2rem; font-weight: 700; color: var(--aurora-cyan);
+            background: rgba(0,212,255,0.1); padding: 0.5rem 1rem;
+            border-radius: 10px; min-width: 60px;
+        }
+        .countdown-label {
+            font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem;
+        }
+
+        /* Observer Log */
+        #observer-log { background: linear-gradient(to bottom, transparent, rgba(191,95,255,0.03), transparent); }
+        .log-container { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        @media (max-width: 900px) { .log-container { grid-template-columns: 1fr; } }
+
+        .log-form-card {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 20px; padding: 2rem;
+        }
+        .log-form-card h3 {
+            font-size: 1.1rem; margin-bottom: 1.5rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .log-form-card h3 svg { width: 20px; height: 20px; stroke: var(--aurora-cyan); }
+
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label {
+            display: block; font-size: 0.85rem; color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 0.85rem 1rem;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border-color);
+            border-radius: 10px; color: var(--text-primary);
+            font-family: inherit; font-size: 0.95rem; transition: all 0.3s ease;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none; border-color: var(--aurora-cyan);
+            background: rgba(0,212,255,0.05);
+        }
+        .form-group input::placeholder, .form-group textarea::placeholder { color: var(--text-muted); }
+        .form-group select { cursor: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23555' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; }
+        .form-group textarea { min-height: 100px; resize: vertical; }
+
+        .kp-slider-container { display: flex; align-items: center; gap: 1rem; }
+        .kp-slider {
+            flex: 1; -webkit-appearance: none; height: 8px;
+            background: rgba(255,255,255,0.1); border-radius: 4px; outline: none;
+        }
+        .kp-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 20px; height: 20px;
+            background: linear-gradient(135deg, var(--aurora-cyan), var(--aurora-purple));
+            border-radius: 50%; cursor: none;
+        }
+        .kp-slider-value {
+            font-size: 1.2rem; font-weight: 600; color: var(--aurora-cyan);
+            min-width: 40px; text-align: center;
+        }
+
+        .submit-btn {
+            width: 100%; padding: 1rem; margin-top: 1rem;
+            background: linear-gradient(135deg, var(--aurora-cyan), var(--aurora-purple));
+            border: none; border-radius: 10px; color: white;
+            font-family: inherit; font-size: 0.95rem; font-weight: 600;
+            cursor: none; transition: all 0.3s ease;
+        }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,212,255,0.3); }
+
+        .log-list-card {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 20px; padding: 2rem; max-height: 500px; overflow-y: auto;
+        }
+        .log-list-card h3 {
+            font-size: 1.1rem; margin-bottom: 1.5rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .log-list-card h3 span { font-size: 0.85rem; color: var(--aurora-green); font-weight: 500; }
+
+        .log-empty {
+            text-align: center; padding: 3rem 1rem; color: var(--text-muted);
+        }
+        .log-empty svg { width: 48px; height: 48px; margin-bottom: 1rem; opacity: 0.3; }
+
+        .log-item {
+            padding: 1.25rem; background: rgba(255,255,255,0.02);
+            border-radius: 12px; margin-bottom: 1rem; position: relative;
+            transition: all 0.3s ease;
+        }
+        .log-item:hover { background: rgba(255,255,255,0.04); }
+        .log-item-header {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+        .log-item-location { font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+        .log-item-date { font-size: 0.8rem; color: var(--text-muted); }
+        .log-item-kp {
+            padding: 0.3rem 0.75rem; border-radius: 50px;
+            font-size: 0.8rem; font-weight: 600;
+        }
+        .log-item-content { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; }
+        .log-item-actions {
+            position: absolute; top: 1rem; right: 1rem;
+            display: flex; gap: 0.5rem; opacity: 0; transition: opacity 0.3s ease;
+        }
+        .log-item:hover .log-item-actions { opacity: 1; }
+        .log-item-actions button {
+            padding: 0.4rem; background: rgba(255,255,255,0.05);
+            border: none; border-radius: 6px; color: var(--text-muted);
+            cursor: none; transition: all 0.2s ease;
+        }
+        .log-item-actions button:hover { background: rgba(255,68,68,0.2); color: var(--aurora-red); }
+
+        /* Favorite Locations */
+        #favorites { padding: 6rem 2rem; }
+        .favorites-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+
+        .location-card {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 20px; padding: 1.5rem; transition: all 0.4s ease;
+            position: relative; overflow: hidden;
+        }
+        .location-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--aurora-cyan), var(--aurora-purple));
+            transform: scaleX(0); transition: transform 0.4s ease;
+        }
+        .location-card:hover::before { transform: scaleX(1); }
+        .location-card:hover {
+            transform: translateY(-5px); border-color: rgba(0,212,255,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .location-card.favorited { border-color: rgba(0,255,136,0.3); }
+
+        .location-header { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; }
+        .location-flag { font-size: 2rem; line-height: 1; }
+        .location-info h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .location-info span { font-size: 0.8rem; color: var(--text-muted); }
+
+        .favorite-btn {
+            position: absolute; top: 1rem; right: 1rem;
+            padding: 0.5rem; background: rgba(255,255,255,0.05);
+            border: none; border-radius: 8px; color: var(--text-muted);
+            cursor: none; transition: all 0.3s ease;
+        }
+        .favorite-btn svg { width: 18px; height: 18px; display: block; }
+        .favorite-btn:hover { background: rgba(255,68,68,0.1); color: var(--aurora-red); }
+        .favorite-btn.active { color: var(--aurora-red); }
+
+        .location-stats {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1rem;
+        }
+        .location-stat { text-align: center; padding: 0.6rem; background: rgba(255,255,255,0.02); border-radius: 8px; }
+        .location-stat-value { font-size: 0.95rem; font-weight: 600; color: var(--aurora-cyan); }
+        .location-stat-label { font-size: 0.65rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+        .location-action {
+            display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+            padding: 0.6rem; background: rgba(0,212,255,0.1); border-radius: 8px;
+            font-size: 0.85rem; color: var(--aurora-cyan); transition: all 0.3s ease;
+        }
+        .location-action:hover { background: rgba(0,212,255,0.2); }
+        .location-action svg { width: 16px; height: 16px; }
+
+        /* Notification Toast */
+        .toast-container {
+            position: fixed; bottom: 2rem; right: 2rem;
+            z-index: 9999; display: flex; flex-direction: column; gap: 0.75rem;
+        }
+        .toast {
+            padding: 1rem 1.5rem; background: var(--bg-card);
+            border: 1px solid var(--border-color); border-radius: 12px;
+            backdrop-filter: blur(10px); display: flex; align-items: center; gap: 0.75rem;
+            animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+            max-width: 350px;
+        }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+        .toast-icon { width: 24px; height: 24px; flex-shrink: 0; }
+        .toast-content { flex: 1; }
+        .toast-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.2rem; }
+        .toast-message { font-size: 0.8rem; color: var(--text-secondary); }
+        .toast-close {
+            padding: 0.25rem; background: none; border: none;
+            color: var(--text-muted); cursor: none; transition: color 0.2s ease;
+        }
+        .toast-close:hover { color: var(--text-primary); }
+        .toast-close svg { width: 16px; height: 16px; }
+
+        /* Footer */
+        footer {
+            padding: 3rem 2rem; border-top: 1px solid var(--border-color);
+            text-align: center; margin-top: 2rem;
+        }
+        .footer-content { max-width: 1200px; margin: 0 auto; }
+        .footer-logo {
+            display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        .footer-logo svg { width: 28px; height: 28px; }
+        .footer-logo span { font-size: 1.1rem; font-weight: 600; }
+        .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .footer-link { color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; transition: color 0.3s ease; }
+        .footer-link:hover { color: var(--aurora-cyan); }
+        .footer-copy { color: var(--text-muted); font-size: 0.8rem; }
+
+        /* Loader */
+        .loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-dark); z-index: 10000;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        .loader.hidden { opacity: 0; visibility: hidden; }
+        .loader-content { text-align: center; }
+        .loader-orb {
+            width: 50px; height: 50px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--aurora-cyan), var(--aurora-purple));
+            margin: 0 auto 1.5rem; animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.7; } }
+        .loader-text { font-size: 0.85rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-secondary); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav { padding: 0.75rem 1rem; }
+            .nav-links { display: none; }
+            section { padding: 4rem 1rem; }
+            .hero { padding: 1rem; }
+            .kp-value { font-size: 4rem; }
+        }
+
+        .animate-on-scroll { opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+        .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-orb"></div>
+            <div class="loader-text">加载数据...</div>
+        </div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-dot" id="cursorDot"></div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Aurora Background -->
+    <div class="aurora-container">
+        <div class="aurora aurora-1"></div>
+        <div class="aurora aurora-2"></div>
+        <div class="aurora aurora-3"></div>
+        <canvas id="particles"></canvas>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <a href="#" class="nav-logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M2 12h20"/>
+            </svg>
+            <span>极光观测站</span>
+        </a>
+        <div class="nav-links">
+            <a href="#forecast" class="nav-link">实时预报</a>
+            <a href="#observer-log" class="nav-link">观测日志</a>
+            <a href="#favorites" class="nav-link">收藏地点</a>
+        </div>
+        <div class="nav-actions">
+            <button class="notification-btn" id="notificationBtn" title="极光提醒">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+                <span class="notification-badge"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <div class="content">
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-badge">Aurora Watch · 实时极光监测</div>
+            <h1 class="hero-title"><span>极光观测站</span></h1>
+            <p class="hero-subtitle">
+                实时追踪极光活动 · 记录你的观测历程<br>
+                当极光绽放时，我们第一时间通知你
+            </p>
+        </section>
+
+        <!-- Live Forecast -->
+        <section id="forecast">
+            <div class="section-header">
+                <span class="section-tag">实时数据</span>
+                <h2 class="section-title">极光活动预报</h2>
+                <p class="section-desc">基于太阳风数据和地磁活动分析</p>
+            </div>
+
+            <div class="forecast-container">
+                <div class="forecast-main animate-on-scroll">
+                    <div class="kp-display">
+                        <div class="kp-value" id="mainKp">0.0</div>
+                        <div class="kp-label">KP 指数</div>
+                    </div>
+                    <div class="kp-status" id="kpStatus">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                        <span>加载中...</span>
+                    </div>
+                    <div class="kp-bar">
+                        <div class="kp-bar-fill" id="kpBarFill" style="width: 0%"></div>
+                    </div>
+                    <div class="kp-bar-markers">
+                        <span>0</span><span>2</span><span>4</span><span>6</span><span>8</span><span>9</span>
+                    </div>
+                    <div class="forecast-meta">
+                        <div class="meta-item">
+                            <div class="meta-value" id="metaSpeed">--</div>
+                            <div class="meta-label">太阳风速度 km/s</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-value" id="metaDensity">--</div>
+                            <div class="meta-label">粒子密度 p/cm³</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-value" id="metaBz">--</div>
+                            <div class="meta-label">磁场 Bz nT</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-value" id="metaVisibility">--%</div>
+                            <div class="meta-label">可见概率</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="forecast-hours animate-on-scroll" style="transition-delay: 0.1s">
+                    <h3>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                        未来24小时预报
+                    </h3>
+                    <div class="hours-grid" id="hoursGrid"></div>
+
+                    <div class="best-time-card">
+                        <h4>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                            </svg>
+                            最佳观测倒计时
+                        </h4>
+                        <div class="countdown">
+                            <div class="countdown-item">
+                                <div class="countdown-value" id="countdownHours">--</div>
+                                <div class="countdown-label">小时</div>
+                            </div>
+                            <div class="countdown-item">
+                                <div class="countdown-value" id="countdownMins">--</div>
+                                <div class="countdown-label">分钟</div>
+                            </div>
+                            <div class="countdown-item">
+                                <div class="countdown-value" id="countdownSecs">--</div>
+                                <div class="countdown-label">秒</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Observer Log -->
+        <section id="observer-log">
+            <div class="section-header">
+                <span class="section-tag">个人记录</span>
+                <h2 class="section-title">我的观测日志</h2>
+                <p class="section-desc">记录每一次与极光的邂逅</p>
+            </div>
+
+            <div class="log-container">
+                <div class="log-form-card animate-on-scroll">
+                    <h3>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                        </svg>
+                        添加新记录
+                    </h3>
+                    <form id="logForm">
+                        <div class="form-group">
+                            <label>观测地点</label>
+                            <input type="text" id="logLocation" placeholder="例如：特罗姆瑟，挪威" required>
+                        </div>
+                        <div class="form-group">
+                            <label>观测日期</label>
+                            <input type="date" id="logDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>KP指数</label>
+                            <div class="kp-slider-container">
+                                <input type="range" class="kp-slider" id="logKp" min="0" max="9" step="0.5" value="4">
+                                <span class="kp-slider-value" id="logKpValue">4.0</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>极光颜色</label>
+                            <select id="logColor">
+                                <option value="green">绿色</option>
+                                <option value="blue">蓝色</option>
+                                <option value="purple">紫色</option>
+                                <option value="pink">粉色</option>
+                                <option value="red">红色</option>
+                                <option value="multi">多彩</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>观测笔记</label>
+                            <textarea id="logNote" placeholder="记录你的观测体验、天气条件、拍摄参数..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">保存记录</button>
+                    </form>
+                </div>
+
+                <div class="log-list-card animate-on-scroll" style="transition-delay: 0.1s">
+                    <h3>
+                        <span>观测记录</span>
+                        <span id="logCount">0 条记录</span>
+                    </h3>
+                    <div id="logList"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Favorite Locations -->
+        <section id="favorites">
+            <div class="section-header">
+                <span class="section-tag">热门地点</span>
+                <h2 class="section-title">观测地点推荐</h2>
+                <p class="section-desc">点击收藏你心仪的观测目的地</p>
+            </div>
+
+            <div class="favorites-grid" id="locationsGrid"></div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M2 12h20"/>
+                    </svg>
+                    <span>极光观测站</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#forecast" class="footer-link">实时预报</a>
+                    <a href="#observer-log" class="footer-link">观测日志</a>
+                    <a href="#favorites" class="footer-link">观测地点</a>
+                </div>
+                <p class="footer-copy">© 2024 Aurora Watch · 探索自然之美</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // ====== Loader ======
+        window.addEventListener('load', () => {
+            setTimeout(() => document.getElementById('loader').classList.add('hidden'), 800);
+        });
+
+        // ====== Custom Cursor ======
+        const cursor = document.getElementById('cursor');
+        const cursorDot = document.getElementById('cursorDot');
+        let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
+
+        document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.1;
+            cursorY += (mouseY - cursorY) * 0.1;
+            cursor.style.left = cursorX - 10 + 'px';
+            cursor.style.top = cursorY - 10 + 'px';
+            cursorDot.style.left = mouseX - 2 + 'px';
+            cursorDot.style.top = mouseY - 2 + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        document.querySelectorAll('a, button, input, select, textarea, .location-card').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        if ('ontouchstart' in window) {
+            cursor.style.display = 'none';
+            cursorDot.style.display = 'none';
+        }
+
+        // ====== Particle System ======
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speedY = -Math.random() * 0.2 - 0.05;
+                this.opacity = Math.random() * 0.4 + 0.1;
+                this.pulse = Math.random() * Math.PI * 2;
+            }
+            update() {
+                this.y += this.speedY;
+                this.pulse += 0.02;
+                if (this.y < 0) { this.y = canvas.height; this.x = Math.random() * canvas.width; }
+            }
+            draw() {
+                const flicker = Math.sin(this.pulse) * 0.3 + 0.7;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * flicker})`;
+                ctx.fill();
+            }
+        }
+
+        const particles = Array.from({ length: 60 }, () => new Particle());
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // ====== Scroll Animations ======
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+        // ====== Smooth Scroll ======
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // ====== Toast Notifications ======
+        function showToast(title, message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+
+            const colors = {
+                success: 'var(--aurora-green)',
+                warning: 'var(--aurora-yellow)',
+                error: 'var(--aurora-red)',
+                info: 'var(--aurora-cyan)'
+            };
+
+            toast.innerHTML = `
+                <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="${colors[type]}" stroke-width="2">
+                    ${type === 'success' ? '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>' :
+                      type === 'error' ? '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>' :
+                      '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>'}
+                </svg>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // ====== Data Storage ======
+        const STORAGE_KEYS = {
+            LOGS: 'aurora_watch_logs',
+            FAVORITES: 'aurora_watch_favorites',
+            NOTIFICATIONS: 'aurora_watch_notifications'
+        };
+
+        function getStoredData(key, defaultValue = []) {
+            try {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : defaultValue;
+            } catch { return defaultValue; }
+        }
+
+        function setStoredData(key, data) {
+            try { localStorage.setItem(key, JSON.stringify(data)); } catch {}
+        }
+
+        // ====== KP Index & Forecast ======
+        let currentKp = 0;
+
+        function getKpColor(kp) {
+            if (kp < 3) return 'var(--aurora-green)';
+            if (kp < 5) return 'var(--aurora-cyan)';
+            if (kp < 7) return 'var(--aurora-yellow)';
+            return 'var(--aurora-red)';
+        }
+
+        function getKpStatus(kp) {
+            if (kp < 3) return { text: '平静', bg: 'rgba(0, 255, 136, 0.1)', border: 'rgba(0, 255, 136, 0.3)', color: 'var(--aurora-green)' };
+            if (kp < 5) return { text: '中等活跃', bg: 'rgba(0, 212, 255, 0.1)', border: 'rgba(0, 212, 255, 0.3)', color: 'var(--aurora-cyan)' };
+            if (kp < 7) return { text: '活跃', bg: 'rgba(255, 221, 0, 0.1)', border: 'rgba(255, 221, 0, 0.3)', color: 'var(--aurora-yellow)' };
+            return { text: '强风暴', bg: 'rgba(255, 68, 68, 0.1)', border: 'rgba(255, 68, 68, 0.3)', color: 'var(--aurora-red)' };
+        }
+
+        function fetchAuroraData() {
+            // Simulate realistic aurora data based on time of day and randomness
+            const hour = new Date().getHours();
+            const baseKp = 2 + Math.sin(hour / 24 * Math.PI * 2 - 3) * 2 + Math.random() * 2;
+            currentKp = Math.max(0, Math.min(9, baseKp));
+
+            const status = getKpStatus(currentKp);
+            const kpPercent = (currentKp / 9) * 100;
+
+            // Update main KP display
+            const kpValueEl = document.getElementById('mainKp');
+            kpValueEl.textContent = currentKp.toFixed(1);
+            kpValueEl.style.background = `linear-gradient(135deg, ${status.color}, var(--aurora-purple))`;
+            kpValueEl.style.webkitBackgroundClip = 'text';
+
+            // Update status badge
+            const kpStatusEl = document.getElementById('kpStatus');
+            kpStatusEl.style.background = status.bg;
+            kpStatusEl.style.borderColor = status.border;
+            kpStatusEl.style.color = status.color;
+            kpStatusEl.querySelector('span').textContent = status.text;
+
+            // Update bar
+            document.getElementById('kpBarFill').style.width = kpPercent + '%';
+            document.getElementById('kpBarFill').style.background = 'linear-gradient(90deg, var(--aurora-green), var(--aurora-yellow), var(--aurora-red))';
+
+            // Update solar wind data
+            document.getElementById('metaSpeed').textContent = Math.round(380 + Math.random() * 180);
+            document.getElementById('metaDensity').textContent = (6 + Math.random() * 12).toFixed(1);
+            document.getElementById('metaBz').textContent = (-10 + Math.random() * 15).toFixed(1);
+
+            // Update visibility
+            const visibility = Math.min(95, Math.round(currentKp * 12 + Math.random() * 15));
+            document.getElementById('metaVisibility').textContent = visibility + '%';
+
+            // Check for notification
+            checkNotification(currentKp);
+
+            // Update hours grid
+            updateHoursGrid();
+
+            // Update countdown
+            updateCountdown();
+        }
+
+        function updateHoursGrid() {
+            const grid = document.getElementById('hoursGrid');
+            grid.innerHTML = '';
+            const now = new Date();
+
+            for (let i = 0; i < 8; i++) {
+                const hourTime = new Date(now.getTime() + i * 3 * 60 * 60 * 1000);
+                const hourKp = Math.max(0, Math.min(9, currentKp + (Math.random() - 0.5) * 2));
+                const color = getKpColor(hourKp);
+
+                const hourEl = document.createElement('div');
+                hourEl.className = 'hour-item';
+                hourEl.innerHTML = `
+                    <div class="hour-time">${hourTime.getHours()}:00</div>
+                    <div class="hour-kp" style="color: ${color}">${hourKp.toFixed(1)}</div>
+                    <div class="hour-bar">
+                        <div class="hour-bar-fill" style="width: ${(hourKp/9)*100}%; background: ${color}"></div>
+                    </div>
+                `;
+                grid.appendChild(hourEl);
+            }
+        }
+
+        function updateCountdown() {
+            // Find next time when KP >= 4
+            const now = new Date();
+            let nextTime = null;
+
+            for (let i = 0; i < 24; i++) {
+                const checkTime = new Date(now.getTime() + i * 60 * 60 * 1000);
+                const checkKp = Math.max(0, Math.min(9, currentKp + Math.sin(i/24 * Math.PI * 2) * 3));
+                if (checkKp >= 4) {
+                    nextTime = checkTime;
+                    break;
+                }
+            }
+
+            if (!nextTime) nextTime = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+
+            const diff = nextTime - now;
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('countdownHours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('countdownMins').textContent = mins.toString().padStart(2, '0');
+            document.getElementById('countdownSecs').textContent = secs.toString().padStart(2, '0');
+        }
+
+        // ====== Notification System ======
+        let notificationsEnabled = false;
+
+        document.getElementById('notificationBtn').addEventListener('click', function() {
+            if (!notificationsEnabled) {
+                if ('Notification' in window) {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === 'granted') {
+                            notificationsEnabled = true;
+                            this.classList.add('active');
+                            showToast('提醒已开启', '当KP指数达到4以上时，我们将通知你', 'success');
+                        } else {
+                            showToast('权限被拒绝', '请在浏览器设置中允许通知', 'error');
+                        }
+                    });
+                } else {
+                    notificationsEnabled = true;
+                    this.classList.add('active');
+                    showToast('提醒已开启', '极光活跃时您将收到通知', 'success');
+                }
+            } else {
+                notificationsEnabled = false;
+                this.classList.remove('active');
+                showToast('提醒已关闭', '您将不会再收到极光提醒', 'info');
+            }
+        });
+
+        let lastNotifiedKp = 0;
+        function checkNotification(kp) {
+            if (notificationsEnabled && kp >= 4 && lastNotifiedKp < 4) {
+                if ('Notification' in window && Notification.permission === 'granted') {
+                    new Notification('🌌 极光警报！', {
+                        body: `当前KP指数：${kp.toFixed(1)}，${getKpStatus(kp).text}！快去观测吧！`,
+                        icon: '🌌'
+                    });
+                }
+                showToast('极光警报！', `当前KP指数 ${kp.toFixed(1)}，${getKpStatus(kp).text}！`, 'warning');
+            }
+            lastNotifiedKp = kp;
+        }
+
+        // ====== Observer Log ======
+        const logForm = document.getElementById('logForm');
+        const logKpSlider = document.getElementById('logKp');
+        const logKpValue = document.getElementById('logKpValue');
+
+        // Set default date to today
+        document.getElementById('logDate').valueAsDate = new Date();
+
+        logKpSlider.addEventListener('input', function() {
+            logKpValue.textContent = parseFloat(this.value).toFixed(1);
+        });
+
+        logForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const log = {
+                id: Date.now(),
+                location: document.getElementById('logLocation').value.trim(),
+                date: document.getElementById('logDate').value,
+                kp: parseFloat(logKpSlider.value),
+                color: document.getElementById('logColor').value,
+                note: document.getElementById('logNote').value.trim()
+            };
+
+            if (!log.location) {
+                showToast('请填写观测地点', '', 'error');
+                return;
+            }
+
+            const logs = getStoredData(STORAGE_KEYS.LOGS);
+            logs.unshift(log);
+            setStoredData(STORAGE_KEYS.LOGS, logs);
+
+            renderLogs();
+            logForm.reset();
+            logKpSlider.value = 4;
+            logKpValue.textContent = '4.0';
+            document.getElementById('logDate').valueAsDate = new Date();
+
+            showToast('记录已保存', `${log.location} 的观测记录已添加`, 'success');
+        });
+
+        function renderLogs() {
+            const logs = getStoredData(STORAGE_KEYS.LOGS);
+            const list = document.getElementById('logList');
+            const count = document.getElementById('logCount');
+
+            count.textContent = `${logs.length} 条记录`;
+
+            if (logs.length === 0) {
+                list.innerHTML = `
+                    <div class="log-empty">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="16" y1="2" x2="16" y2="6"/>
+                            <line x1="8" y1="2" x2="8" y2="6"/>
+                            <line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+                        <p>还没有观测记录</p>
+                        <p style="font-size: 0.85rem; margin-top: 0.5rem;">填写左侧表单，记录你的第一次极光观测</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const colorMap = {
+                green: { bg: 'rgba(0, 255, 136, 0.15)', text: 'var(--aurora-green)' },
+                blue: { bg: 'rgba(0, 212, 255, 0.15)', text: 'var(--aurora-cyan)' },
+                purple: { bg: 'rgba(191, 95, 255, 0.15)', text: 'var(--aurora-purple)' },
+                pink: { bg: 'rgba(255, 107, 157, 0.15)', text: 'var(--aurora-pink)' },
+                red: { bg: 'rgba(255, 68, 68, 0.15)', text: 'var(--aurora-red)' },
+                multi: { bg: 'linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(191, 95, 255, 0.15))', text: 'var(--aurora-cyan)' }
+            };
+
+            list.innerHTML = logs.slice(0, 10).map(log => {
+                const color = colorMap[log.color] || colorMap.green;
+                return `
+                    <div class="log-item">
+                        <div class="log-item-actions">
+                            <button onclick="deleteLog(${log.id})" title="删除">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                                    <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="log-item-header">
+                            <div class="log-item-location">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                                </svg>
+                                ${log.location}
+                            </div>
+                            <span class="log-item-kp" style="background: ${color.bg}; color: ${color.text}">KP ${log.kp.toFixed(1)}</span>
+                        </div>
+                        <div class="log-item-date">${log.date}</div>
+                        ${log.note ? `<div class="log-item-content">${log.note}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.deleteLog = function(id) {
+            const logs = getStoredData(STORAGE_KEYS.LOGS).filter(log => log.id !== id);
+            setStoredData(STORAGE_KEYS.LOGS, logs);
+            renderLogs();
+            showToast('记录已删除', '', 'info');
+        };
+
+        // ====== Favorite Locations ======
+        const locations = [
+            { id: 1, name: '特罗姆瑟', country: '挪威', flag: '🇳🇴', lat: 69.65, lon: 18.99, season: '9月-次年3月', minKp: 2 },
+            { id: 2, name: '罗瓦涅米', country: '芬兰', flag: '🇫🇮', lat: 66.5, lon: 25.73, season: '10月-次年3月', minKp: 2 },
+            { id: 3, name: '费尔班克斯', country: '阿拉斯加', flag: '🇺🇸', lat: 64.84, lon: -147.72, season: '8月-次年4月', minKp: 3 },
+            { id: 4, name: '黄刀镇', country: '加拿大', flag: '🇨🇦', lat: 62.45, lon: -114.37, season: '8月-次年4月', minKp: 3 },
+            { id: 5, name: '雷克雅未克', country: '冰岛', flag: '🇮🇸', lat: 64.15, lon: -21.94, season: '9月-次年3月', minKp: 3 },
+            { id: 6, name: '阿比斯库', country: '瑞典', flag: '🇸🇪', lat: 68.35, lon: 18.83, season: '9月-次年3月', minKp: 2 }
+        ];
+
+        function renderLocations() {
+            const favorites = getStoredData(STORAGE_KEYS.FAVORITES);
+            const grid = document.getElementById('locationsGrid');
+
+            grid.innerHTML = locations.map(loc => {
+                const isFavorited = favorites.includes(loc.id);
+                return `
+                    <div class="location-card ${isFavorited ? 'favorited' : ''}" data-id="${loc.id}">
+                        <button class="favorite-btn ${isFavorited ? 'active' : ''}" onclick="toggleFavorite(${loc.id})">
+                            <svg viewBox="0 0 24 24" fill="${isFavorited ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                            </svg>
+                        </button>
+                        <div class="location-header">
+                            <div class="location-flag">${loc.flag}</div>
+                            <div class="location-info">
+                                <h3>${loc.name}</h3>
+                                <span>${loc.country}</span>
+                            </div>
+                        </div>
+                        <div class="location-stats">
+                            <div class="location-stat">
+                                <div class="location-stat-value">${loc.minKp}+</div>
+                                <div class="location-stat-label">最低KP</div>
+                            </div>
+                            <div class="location-stat">
+                                <div class="location-stat-value">${loc.lat.toFixed(0)}°</div>
+                                <div class="location-stat-label">北纬</div>
+                            </div>
+                            <div class="location-stat">
+                                <div class="location-stat-value">${loc.lon.toFixed(0)}°</div>
+                                <div class="location-stat-label">经度</div>
+                            </div>
+                        </div>
+                        <div class="location-action">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                <line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                            ${loc.season}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.toggleFavorite = function(id) {
+            let favorites = getStoredData(STORAGE_KEYS.FAVORITES);
+            const loc = locations.find(l => l.id === id);
+
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(f => f !== id);
+                showToast('已取消收藏', `${loc.name}`, 'info');
+            } else {
+                favorites.push(id);
+                showToast('已添加到收藏', `${loc.name} - ${loc.season}`, 'success');
+            }
+
+            setStoredData(STORAGE_KEYS.FAVORITES, favorites);
+            renderLocations();
+        };
+
+        // ====== Initialize ======
+        fetchAuroraData();
+        renderLogs();
+        renderLocations();
+
+        // Update data every 30 seconds
+        setInterval(fetchAuroraData, 30000);
+        setInterval(updateCountdown, 1000);
+
+        // Show welcome toast
+        setTimeout(() => {
+            showToast('欢迎来到极光观测站', '点击右上角铃铛开启极光提醒', 'info');
+        }, 1500);
+    </script>
+</body>
+</html>

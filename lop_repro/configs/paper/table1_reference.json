@@ -1,0 +1,16 @@
+{
+  "table1": [
+    {"ratio": "0%", "method": "-", "mme_p": 1694.39, "mme_r": 640.36, "mmbench": 86.88, "mmmu": 51.29, "pope": 87.48, "avg": 75.22, "speedup": ""},
+    {"ratio": "20%", "method": "Magnitude", "mme_p": 1397.55, "mme_r": 327.86, "mmbench": 78.05, "mmmu": 38.55, "pope": 83.76, "avg": 66.79, "speedup": 3034.36},
+    {"ratio": "20%", "method": "WandA", "mme_p": 1643.19, "mme_r": 554.64, "mmbench": 84.52, "mmmu": 43.69, "pope": 88.22, "avg": 72.14, "speedup": 5.66},
+    {"ratio": "20%", "method": "FLAP", "mme_p": 1651.26, "mme_r": 568.57, "mmbench": 84.78, "mmmu": 42.64, "pope": 87.67, "avg": 71.70, "speedup": 1.00},
+    {"ratio": "20%", "method": "LOP", "mme_p": 1631.15, "mme_r": 605.00, "mmbench": 86.02, "mmmu": 46.03, "pope": 88.07, "avg": 73.37, "speedup": 1560.81},
+    {"ratio": "30%", "method": "Magnitude", "mme_p": 1397.55, "mme_r": 327.86, "mmbench": 58.33, "mmmu": 25.70, "pope": 51.41, "avg": 45.15, "speedup": 3246.44},
+    {"ratio": "30%", "method": "WandA", "mme_p": 1542.28, "mme_r": 429.64, "mmbench": 81.59, "mmmu": 43.11, "pope": 88.38, "avg": 71.03, "speedup": 7.90},
+    {"ratio": "30%", "method": "FLAP", "mme_p": 1537.39, "mme_r": 534.64, "mmbench": 82.12, "mmmu": 41.24, "pope": 87.46, "avg": 70.27, "speedup": 1.00},
+    {"ratio": "30%", "method": "LOP", "mme_p": 1613.73, "mme_r": 575.00, "mmbench": 85.65, "mmmu": 44.16, "pope": 87.83, "avg": 72.55, "speedup": 1460.90},
+    {"ratio": "50%", "method": "WandA", "mme_p": 1142.19, "mme_r": 132.86, "mmbench": 58.67, "mmmu": 29.09, "pope": 85.91, "avg": 57.89, "speedup": 5.87},
+    {"ratio": "50%", "method": "FLAP", "mme_p": 1337.49, "mme_r": 356.07, "mmbench": 70.43, "mmmu": 32.83, "pope": 87.46, "avg": 63.57, "speedup": 1.00},
+    {"ratio": "50%", "method": "LOP", "mme_p": 1478.07, "mme_r": 468.57, "mmbench": 82.17, "mmmu": 35.51, "pope": 87.47, "avg": 68.38, "speedup": 1682.39}
+  ]
+}

@@ -1,0 +1,15 @@
+--extra-index-url https://download.pytorch.org/whl/cu128
+
+torch==2.7.0+cu128
+torchvision==0.22.0+cu128
+torchaudio==2.7.0+cu128
+flash-attn @ https://huggingface.co/lldacing/flash-attention-windows-wheel/resolve/main/flash_attn-2.7.4.post1%2Bcu128torch2.7.0cxx11abiFALSE-cp310-cp310-win_amd64.whl
+
+transformers>=4.49.0
+accelerate
+safetensors
+pillow
+qwen-vl-utils
+bitsandbytes
+timm
+einops

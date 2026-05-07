@@ -1,0 +1,56 @@
+# Python cache and virtual environments
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+env/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# Large local assets
+/models/
+/data/
+/external/
+
+# Generated experiment outputs
+/outputs/
+/runs/
+/wandb/
+/logs/
+*.log
+
+# Paper binaries and generated paper extraction artifacts
+/论文/*.pdf
+/论文/paper_ai_reading/
+
+# Model/data artifact formats
+*.safetensors
+*.bin
+*.ckpt
+*.pt
+*.pth
+*.onnx
+*.gguf
+*.parquet
+*.arrow
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

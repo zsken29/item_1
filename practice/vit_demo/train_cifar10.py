@@ -1,6 +1,6 @@
 """
-ViT 在 CIFAR-10 上的完整训练和推理
-完整流程：数据加载 → 模型训练 → 模型评估 → 推理演示
+ViT on CIFAR-10: Complete Training & Inference
+Features: Progress bar, mixed precision, gradient clipping, optimized data loading
 """
 
 import torch
@@ -13,35 +13,39 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 import time
+from tqdm import tqdm
 
 from vit_model import VisionTransformer
 
 
 # ============================================================================
-# 配置
+# Configuration
 # ============================================================================
 class Config:
-    # 数据集配置
     data_dir = './data'
-    img_size = 32          # CIFAR-10 图像尺寸
+    img_size = 32
     num_classes = 10
 
-    # ViT 配置 (适配 CIFAR-10)
-    patch_size = 4         # 32/4 = 8 patches 每边
-    embed_dim = 256        # 适中规模
-    depth = 4              # 4 层 (轻量)
+    # ViT for CIFAR-10
+    patch_size = 4
+    embed_dim = 256
+    depth = 4
     num_heads = 4
     mlp_ratio = 4
     dropout = 0.1
 
-    # 训练配置
+    # Training
     batch_size = 128
     epochs = 30
     lr = 3e-4
     weight_decay = 0.01
     warmup_epochs = 5
+    grad_clip = 1.0
 
-    # 其他
+    # Optimizations
+    use_amp = True
+    num_workers = 4
+
     seed = 42
     save_dir = './checkpoints'
 
@@ -52,12 +56,9 @@ def set_seed(seed):
 
 
 # ============================================================================
-# 数据加载
+# Data Loading
 # ============================================================================
 def get_data_loaders(cfg):
-    """获取 CIFAR-10 数据加载器"""
-
-    # 数据增强
     train_transform = transforms.Compose([
         transforms.RandomCrop(32, padding=4),
         transforms.RandomHorizontalFlip(),
@@ -70,7 +71,6 @@ def get_data_loaders(cfg):
         transforms.Normalize([0.4914, 0.4822, 0.4465], [0.2470, 0.2435, 0.2616])
     ])
 
-    # 下载并加载数据集
     trainset = torchvision.datasets.CIFAR10(
         root=cfg.data_dir, train=True,
         download=True, transform=train_transform
@@ -83,23 +83,21 @@ def get_data_loaders(cfg):
 
     trainloader = DataLoader(
         trainset, batch_size=cfg.batch_size,
-        shuffle=True, num_workers=2, pin_memory=True
+        shuffle=True, num_workers=cfg.num_workers,
+        pin_memory=True, persistent_workers=True
     )
 
     testloader = DataLoader(
         testset, batch_size=cfg.batch_size,
-        shuffle=False, num_workers=2, pin_memory=True
+        shuffle=False, num_workers=cfg.num_workers,
+        pin_memory=True, persistent_workers=True
     )
 
     return trainloader, testloader
 
 
-# ============================================================================
-# 模型
-# ============================================================================
 def create_vit_cifar10(cfg):
-    """创建适配 CIFAR-10 的 ViT 模型"""
-    model = VisionTransformer(
+    return VisionTransformer(
         img_size=cfg.img_size,
         patch_size=cfg.patch_size,
         in_channels=3,
@@ -110,11 +108,10 @@ def create_vit_cifar10(cfg):
         mlp_ratio=cfg.mlp_ratio,
         dropout=cfg.dropout
     )
-    return model
 
 
 # ============================================================================
-# 学习率调度 (Linear Warmup + Cosine Decay)
+# Learning Rate Scheduler (Warmup + Cosine Decay)
 # ============================================================================
 class WarmupCosineScheduler:
     def __init__(self, optimizer, warmup_epochs, total_epochs, min_lr=1e-6):
@@ -126,10 +123,8 @@ class WarmupCosineScheduler:
 
     def step(self, epoch):
         if epoch < self.warmup_epochs:
-            # Linear warmup
             factor = (epoch + 1) / self.warmup_epochs
         else:
-            # Cosine decay
             progress = (epoch - self.warmup_epochs) / (self.total_epochs - self.warmup_epochs)
             factor = 0.5 * (1 + np.cos(np.pi * progress))
 
@@ -138,98 +133,110 @@ class WarmupCosineScheduler:
 
 
 # ============================================================================
-# 训练
+# Training Functions
 # ============================================================================
-def train_epoch(model, loader, criterion, optimizer, device):
+def train_epoch(model, loader, criterion, optimizer, device, scaler, grad_clip):
     model.train()
     total_loss = 0
     correct = 0
     total = 0
 
-    for inputs, targets in loader:
+    pbar = tqdm(loader, desc="Training", leave=False)
+    for inputs, targets in pbar:
         inputs, targets = inputs.to(device), targets.to(device)
 
         optimizer.zero_grad()
-        outputs = model(inputs)
-        loss = criterion(outputs, targets)
-        loss.backward()
-        optimizer.step()
+
+        if scaler is not None:
+            with torch.amp.autocast(device_type='cuda'):
+                outputs = model(inputs)
+                loss = criterion(outputs, targets)
+            scaler.scale(loss).backward()
+            scaler.unscale_(optimizer)
+            nn.utils.clip_grad_norm_(model.parameters(), grad_clip)
+            scaler.step(optimizer)
+            scaler.update()
+        else:
+            outputs = model(inputs)
+            loss = criterion(outputs, targets)
+            loss.backward()
+            nn.utils.clip_grad_norm_(model.parameters(), grad_clip)
+            optimizer.step()
 
         total_loss += loss.item()
         _, predicted = outputs.max(1)
         total += targets.size(0)
         correct += predicted.eq(targets).sum().item()
 
+        pbar.set_postfix({'loss': f'{loss.item():.4f}', 'acc': f'{100.*correct/total:.2f}%'})
+
     return total_loss / len(loader), 100. * correct / total
 
 
+@torch.no_grad()
 def evaluate(model, loader, criterion, device):
     model.eval()
     total_loss = 0
     correct = 0
     total = 0
 
-    with torch.no_grad():
-        for inputs, targets in loader:
-            inputs, targets = inputs.to(device), targets.to(device)
-            outputs = model(inputs)
-            loss = criterion(outputs, targets)
+    pbar = tqdm(loader, desc="Evaluating", leave=False)
+    for inputs, targets in pbar:
+        inputs, targets = inputs.to(device), targets.to(device)
+        outputs = model(inputs)
+        loss = criterion(outputs, targets)
 
-            total_loss += loss.item()
-            _, predicted = outputs.max(1)
-            total += targets.size(0)
-            correct += predicted.eq(targets).sum().item()
+        total_loss += loss.item()
+        _, predicted = outputs.max(1)
+        total += targets.size(0)
+        correct += predicted.eq(targets).sum().item()
+
+        pbar.set_postfix({'loss': f'{loss.item():.4f}', 'acc': f'{100.*correct/total:.2f}%'})
 
     return total_loss / len(loader), 100. * correct / total
 
 
+# ============================================================================
+# Training Loop
+# ============================================================================
 def train(cfg):
-    """完整训练流程"""
     set_seed(cfg.seed)
     os.makedirs(cfg.save_dir, exist_ok=True)
 
-    # 设备
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print(f"使用设备: {device}")
+    print(f"[INFO] Device: {device}")
+    print(f"[INFO] Mixed Precision: {cfg.use_amp and torch.cuda.is_available()}")
 
-    # 数据
-    print("加载 CIFAR-10 数据集...")
+    print("[INFO] Loading CIFAR-10...")
     trainloader, testloader = get_data_loaders(cfg)
 
-    # 模型
     model = create_vit_cifar10(cfg).to(device)
-    print(f"\n模型参数量: {sum(p.numel() for p in model.parameters()):,}")
-    print(f"  - Patch size: {cfg.patch_size}x{cfg.patch_size}")
-    print(f"  - Patch 数量: {(cfg.img_size // cfg.patch_size) ** 2}")
-    print(f"  - Embed dim: {cfg.embed_dim}")
+    params = sum(p.numel() for p in model.parameters())
+    print(f"[INFO] Model params: {params:,}")
+    print(f"[INFO] Patch: {cfg.patch_size}x{cfg.patch_size}, Patches: {(cfg.img_size // cfg.patch_size) ** 2}")
+    print(f"[INFO] Embed: {cfg.embed_dim}, Depth: {cfg.depth}, Heads: {cfg.num_heads}")
 
-    # 损失和优化器
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.AdamW(
-        model.parameters(),
-        lr=cfg.lr,
-        weight_decay=cfg.weight_decay
-    )
+    optimizer = optim.AdamW(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
     scheduler = WarmupCosineScheduler(optimizer, cfg.warmup_epochs, cfg.epochs)
 
-    # 训练记录
-    history = {
-        'train_loss': [], 'train_acc': [],
-        'test_loss': [], 'test_acc': [],
-        'epochs': []
-    }
+    scaler = torch.amp.GradScaler('cuda') if cfg.use_amp and torch.cuda.is_available() else None
+
+    history = {'train_loss': [], 'train_acc': [], 'test_loss': [], 'test_acc': [], 'epochs': []}
 
     best_acc = 0
     start_time = time.time()
 
-    print("\n开始训练...")
+    print("\n" + "=" * 70)
+    print(f"{'Epoch':>6} | {'LR':>10} | {'Train Loss':>10} | {'Train Acc':>8} | {'Test Loss':>10} | {'Test Acc':>8} | {'Best':>8}")
     print("-" * 70)
 
     for epoch in range(cfg.epochs):
+        epoch_start = time.time()
         scheduler.step(epoch)
         current_lr = optimizer.param_groups[0]['lr']
 
-        train_loss, train_acc = train_epoch(model, trainloader, criterion, optimizer, device)
+        train_loss, train_acc = train_epoch(model, trainloader, criterion, optimizer, device, scaler, cfg.grad_clip)
         test_loss, test_acc = evaluate(model, testloader, criterion, device)
 
         history['epochs'].append(epoch + 1)
@@ -238,7 +245,6 @@ def train(cfg):
         history['test_loss'].append(test_loss)
         history['test_acc'].append(test_acc)
 
-        # 保存最佳模型
         if test_acc > best_acc:
             best_acc = test_acc
             torch.save({
@@ -248,59 +254,51 @@ def train(cfg):
                 'test_acc': test_acc,
             }, os.path.join(cfg.save_dir, 'best_vit_cifar10.pth'))
 
-        if (epoch + 1) % 5 == 0 or epoch == 0:
-            print(f"Epoch {epoch+1:3d}/{cfg.epochs} | "
-                  f"LR: {current_lr:.2e} | "
-                  f"Train: {train_acc:.2f}% | "
-                  f"Test: {test_acc:.2f}% | "
-                  f"Best: {best_acc:.2f}%")
+        epoch_time = time.time() - epoch_start
+        print(f"{epoch+1:>6} | {current_lr:>10.2e} | {train_loss:>10.4f} | {train_acc:>7.2f}% | {test_loss:>10.4f} | {test_acc:>7.2f}% | {best_acc:>7.2f}% | {epoch_time:>5.1f}s")
 
     total_time = time.time() - start_time
     print("-" * 70)
-    print(f"训练完成! 耗时: {total_time/60:.1f} 分钟")
-    print(f"最佳测试准确率: {best_acc:.2f}%")
+    print(f"Training completed in {total_time/60:.1f} minutes | Best Test Accuracy: {best_acc:.2f}%")
+    print("=" * 70)
 
-    # 保存训练曲线
     plot_training_history(history)
 
     return model, history
 
 
 # ============================================================================
-# 可视化
+# Visualization
 # ============================================================================
 def plot_training_history(history):
-    """绘制训练曲线"""
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
 
     epochs = history['epochs']
 
-    # Loss 曲线
-    ax1.plot(epochs, history['train_loss'], label='Train')
-    ax1.plot(epochs, history['test_loss'], label='Test')
+    ax1.plot(epochs, history['train_loss'], label='Train', linewidth=2)
+    ax1.plot(epochs, history['test_loss'], label='Test', linewidth=2)
     ax1.set_xlabel('Epoch')
     ax1.set_ylabel('Loss')
     ax1.set_title('Training and Test Loss')
     ax1.legend()
-    ax1.grid(True)
+    ax1.grid(True, alpha=0.3)
 
-    # Accuracy 曲线
-    ax2.plot(epochs, history['train_acc'], label='Train')
-    ax2.plot(epochs, history['test_acc'], label='Test')
+    ax2.plot(epochs, history['train_acc'], label='Train', linewidth=2)
+    ax2.plot(epochs, history['test_acc'], label='Test', linewidth=2)
     ax2.set_xlabel('Epoch')
     ax2.set_ylabel('Accuracy (%)')
     ax2.set_title('Training and Test Accuracy')
     ax2.legend()
-    ax2.grid(True)
+    ax2.grid(True, alpha=0.3)
 
     plt.tight_layout()
     plt.savefig('training_history.png', dpi=150, bbox_inches='tight')
     plt.show()
-    print("训练曲线已保存到 training_history.png")
+    print("[INFO] Training curve saved to training_history.png")
 
 
 # ============================================================================
-# 推理演示
+# Inference Demo
 # ============================================================================
 CIFAR10_CLASSES = [
     'airplane', 'automobile', 'bird', 'cat', 'deer',
@@ -308,69 +306,65 @@ CIFAR10_CLASSES = [
 ]
 
 
+@torch.no_grad()
 def inference_demo(cfg, num_samples=16):
-    """推理演示"""
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    # 加载最佳模型
     model = create_vit_cifar10(cfg).to(device)
-    checkpoint = torch.load(os.path.join(cfg.save_dir, 'best_vit_cifar10.pth'))
+    checkpoint = torch.load(os.path.join(cfg.save_dir, 'best_vit_cifar10.pth'), weights_only=False)
     model.load_state_dict(checkpoint['model_state_dict'])
     model.eval()
 
-    # 加载测试数据
     _, testloader = get_data_loaders(cfg)
 
-    # 获取一批样本
     images, labels = next(iter(testloader))
     images, labels = images[:num_samples].to(device), labels[:num_samples]
 
-    # 推理
-    with torch.no_grad():
+    with torch.amp.autocast(device_type='cuda'):
         outputs = model(images)
-        _, predicted = outputs.max(1)
+    _, predicted = outputs.max(1)
 
-    # 可视化
-    fig, axes = plt.subplots(4, 4, figsize=(10, 10))
+    fig, axes = plt.subplots(4, 4, figsize=(12, 12))
     for i, ax in enumerate(axes.flat):
         img = images[i].cpu().numpy().transpose(1, 2, 0)
-        img = (img - img.min()) / (img.max() - img.min())  # 反标准化
+        img = (img - img.min()) / (img.max() - img.min() + 1e-8)
 
         true_label = CIFAR10_CLASSES[labels[i]]
         pred_label = CIFAR10_CLASSES[predicted[i]]
         color = 'green' if true_label == pred_label else 'red'
 
         ax.imshow(img)
-        ax.set_title(f"True: {true_label}\nPred: {pred_label}", color=color, fontsize=10)
+        ax.set_title(f"True: {true_label}\nPred: {pred_label}", color=color, fontsize=11)
         ax.axis('off')
 
     plt.tight_layout()
     plt.savefig('inference_demo.png', dpi=150, bbox_inches='tight')
     plt.show()
-    print(f"\n推理结果已保存到 inference_demo.png")
 
-    # 打印预测详情
     print("\n" + "=" * 50)
-    print("推理结果:")
+    print("Inference Results:")
     print("=" * 50)
+    correct = 0
     for i in range(num_samples):
         true = CIFAR10_CLASSES[labels[i]]
         pred = CIFAR10_CLASSES[predicted[i]]
-        status = "✓" if true == pred else "✗"
-        print(f"样本 {i+1:2d}: 真实={true:>10s} | 预测={pred:>10s} | {status}")
+        status = "OK" if true == pred else "NG"
+        if true == pred:
+            correct += 1
+        print(f"  Sample {i+1:2d}: True={true:>10s} | Pred={pred:>10s} | {status}")
+    print("=" * 50)
+    print(f"  Accuracy: {correct}/{num_samples} ({100.*correct/num_samples:.1f}%)")
+    print("[INFO] Inference demo saved to inference_demo.png")
 
 
 def main():
     cfg = Config()
 
-    # 训练
     model, history = train(cfg)
-
-    # 推理演示
     inference_demo(cfg)
 
     print("\n" + "=" * 50)
-    print("ViT CIFAR-10 训练演示完成!")
+    print("ViT CIFAR-10 Training Complete!")
     print("=" * 50)
 
 

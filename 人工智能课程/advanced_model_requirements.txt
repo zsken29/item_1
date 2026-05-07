@@ -1,0 +1,28 @@
+# 用途：安装更强模型测试需要的三类提升树/集成树包，以及自动调参工具。
+# 运行方式：
+#   python -m pip install -U -r advanced_model_requirements.txt
+#
+# 当前电脑上我刚才发现 pip 本身可能会先报错：
+#   ImportError: DLL load failed while importing pyexpat
+# 如果你也遇到这个报错，先在 Anaconda Prompt 里执行：
+#   conda install -n base -y expat
+# 然后再执行上面的 pip install 命令。
+#
+# 基础评估/保存工具：现有 baseline 和新模型搜索脚本都会用到
+scikit-learn==1.7.2
+joblib==1.5.3
+
+# 必装：三类强模型包
+xgboost==3.2.0
+lightgbm==4.6.0
+catboost==1.2.10
+
+# 推荐：用于自动搜索更优超参数
+optuna==4.8.0
+optuna-integration==4.8.0
+
+# Optional advanced tabular search tools tried after the first cleanup.
+# Note: tabpfn requires accepting the Prior Labs license and setting TABPFN_TOKEN
+# before local model weights can be downloaded.
+flaml==2.6.0
+tabpfn==7.1.1

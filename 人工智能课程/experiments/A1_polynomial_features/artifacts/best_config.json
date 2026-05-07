@@ -1,0 +1,58 @@
+{
+  "name": "A2c_pca3_poly2_gmm3",
+  "config": {
+    "transformer_type": "pca",
+    "transformer_n_components": 3,
+    "n_components": 3,
+    "covariance_type": "full",
+    "random_state": 42,
+    "reg_covar": 0.0001,
+    "n_init": 3,
+    "max_iter": 500,
+    "class_n_components_0": null,
+    "class_n_components_1": null,
+    "class_n_components_2": null,
+    "class_offset_0": 0.0,
+    "class_offset_1": 0.0,
+    "class_offset_2": 0.0,
+    "feature_names": [
+      "Feature_1",
+      "Feature_2",
+      "Feature_3",
+      "Feature_1^2",
+      "Feature_1 Feature_2",
+      "Feature_1 Feature_3",
+      "Feature_2^2",
+      "Feature_2 Feature_3",
+      "Feature_3^2"
+    ]
+  },
+  "valid_accuracy": 0.8125,
+  "repeated_cv_mean": 0.8119999999999998,
+  "class_metrics": [
+    {
+      "class": 0,
+      "precision": 0.8266666666666667,
+      "recall": 0.646795827123696,
+      "f1": 0.725752508361204,
+      "support": 671
+    },
+    {
+      "class": 1,
+      "precision": 0.7154046997389034,
+      "recall": 0.8315629742033384,
+      "f1": 0.7691228070175439,
+      "support": 659
+    },
+    {
+      "class": 2,
+      "precision": 0.9069111424541608,
+      "recall": 0.9597014925373134,
+      "f1": 0.9325598259608412,
+      "support": 670
+    }
+  ],
+  "baseline_valid": 0.815,
+  "baseline_repeated_cv": 0.8113,
+  "improvement": 0.0006999999999998119
+}

@@ -1,0 +1,17 @@
+{
+  "模型名称": "gmm_2_full",
+  "模型说明": "每个类别单独训练一个两成分全协方差高斯混合模型。",
+  "输入特征": [
+    "Feature_1",
+    "Feature_2",
+    "Feature_3"
+  ],
+  "标签列": "Label",
+  "模型参数": {
+    "covariance_type": "full",
+    "n_components": 2,
+    "random_state": 42,
+    "reg_covar": 1e-06
+  },
+  "默认模型文件": "final_model.joblib"
+}

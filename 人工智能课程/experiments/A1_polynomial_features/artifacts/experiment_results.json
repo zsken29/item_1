@@ -1,0 +1,3245 @@
+[
+  {
+    "name": "A0_baseline_raw",
+    "valid_accuracy": 0.8145,
+    "cv_mean": 0.8107,
+    "cv_std": 0.010642368157510797,
+    "repeated_cv_mean": 0.8114333333333333,
+    "repeated_cv_std": 0.007210794377567241,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.8288973384030418,
+        "recall": 0.6497764530551415,
+        "f1": 0.7284878863826232,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.7161458333333334,
+        "recall": 0.834597875569044,
+        "f1": 0.7708479327259986,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.9107648725212465,
+        "recall": 0.9597014925373134,
+        "f1": 0.934593023255814,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 1e-06,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3"
+      ]
+    }
+  },
+  {
+    "name": "A1_poly2_nc2_full_reg1e-06",
+    "valid_accuracy": 0.792,
+    "cv_mean": 0.7937999999999998,
+    "cv_std": 0.012135073135337902,
+    "repeated_cv_mean": 0.7935666666666666,
+    "repeated_cv_std": 0.008473225805769345,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.8438177874186551,
+        "recall": 0.5797317436661699,
+        "f1": 0.6872791519434629,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6896984924623115,
+        "recall": 0.8330804248861912,
+        "f1": 0.7546391752577319,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8694481830417228,
+        "recall": 0.9641791044776119,
+        "f1": 0.9143665958952583,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 1e-06,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_poly2_nc2_full_reg0.0001",
+    "valid_accuracy": 0.792,
+    "cv_mean": 0.7938,
+    "cv_std": 0.011906300852909744,
+    "repeated_cv_mean": 0.7937333333333334,
+    "repeated_cv_std": 0.008445643189768837,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.841991341991342,
+        "recall": 0.5797317436661699,
+        "f1": 0.6866725507502206,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6923076923076923,
+        "recall": 0.8330804248861912,
+        "f1": 0.756198347107438,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8671140939597315,
+        "recall": 0.9641791044776119,
+        "f1": 0.9130742049469964,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_poly2_nc2_full_reg0.001",
+    "valid_accuracy": 0.7915,
+    "cv_mean": 0.7931,
+    "cv_std": 0.012935996289424323,
+    "repeated_cv_mean": 0.7943333333333332,
+    "repeated_cv_std": 0.008719072325782265,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.8405172413793104,
+        "recall": 0.5812220566318927,
+        "f1": 0.6872246696035242,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6964285714285714,
+        "recall": 0.8285280728376327,
+        "f1": 0.7567567567567568,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8603723404255319,
+        "recall": 0.9656716417910448,
+        "f1": 0.909985935302391,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_poly2_nc2_diag_reg1e-06",
+    "valid_accuracy": 0.7425,
+    "cv_mean": 0.7483,
+    "cv_std": 0.011660188677718729,
+    "repeated_cv_mean": 0.7491,
+    "repeated_cv_std": 0.008699042092859034,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.7662337662337663,
+        "recall": 0.5275707898658718,
+        "f1": 0.6248896734333628,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6714285714285714,
+        "recall": 0.7845220030349014,
+        "f1": 0.7235829251224632,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.7994791666666666,
+        "recall": 0.9164179104477612,
+        "f1": 0.8539638386648123,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "diag",
+      "random_state": 42,
+      "reg_covar": 1e-06,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_poly2_nc2_diag_reg0.0001",
+    "valid_accuracy": 0.7425,
+    "cv_mean": 0.7483,
+    "cv_std": 0.011660188677718729,
+    "repeated_cv_mean": 0.7490333333333333,
+    "repeated_cv_std": 0.00872633307230986,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.7662337662337663,
+        "recall": 0.5275707898658718,
+        "f1": 0.6248896734333628,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6714285714285714,
+        "recall": 0.7845220030349014,
+        "f1": 0.7235829251224632,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.7994791666666666,
+        "recall": 0.9164179104477612,
+        "f1": 0.8539638386648123,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "diag",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_poly2_nc2_diag_reg0.001",
+    "valid_accuracy": 0.742,
+    "cv_mean": 0.7485999999999999,
+    "cv_std": 0.011599137898999209,
+    "repeated_cv_mean": 0.7494,
+    "repeated_cv_std": 0.008641373347641746,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.7657266811279827,
+        "recall": 0.526080476900149,
+        "f1": 0.6236749116607774,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6714285714285714,
+        "recall": 0.7845220030349014,
+        "f1": 0.7235829251224632,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.7984395318595578,
+        "recall": 0.9164179104477612,
+        "f1": 0.8533703961084086,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "diag",
+      "random_state": 42,
+      "reg_covar": 0.001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_poly2_nc3_full_reg1e-06",
+    "valid_accuracy": 0.7865,
+    "cv_mean": 0.7706000000000001,
+    "cv_std": 0.021362116000059536,
+    "repeated_cv_mean": 0.7747333333333334,
+    "repeated_cv_std": 0.013703851851051056,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.8389121338912134,
+        "recall": 0.5976154992548435,
+        "f1": 0.6979982593559617,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6596980255516841,
+        "recall": 0.8619119878603946,
+        "f1": 0.7473684210526316,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.913767019667171,
+        "recall": 0.9014925373134328,
+        "f1": 0.9075882794891059,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 3,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 1e-06,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_poly2_nc3_full_reg0.0001",
+    "valid_accuracy": 0.79,
+    "cv_mean": 0.781,
+    "cv_std": 0.013183322798141614,
+    "repeated_cv_mean": 0.7789333333333333,
+    "repeated_cv_std": 0.009544399172056654,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.8421052631578947,
+        "recall": 0.5961251862891207,
+        "f1": 0.6980802792321117,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6635514018691588,
+        "recall": 0.8619119878603946,
+        "f1": 0.7498349834983499,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.9147982062780269,
+        "recall": 0.9134328358208955,
+        "f1": 0.9141150112023898,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 3,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_poly2_nc3_full_reg0.001",
+    "valid_accuracy": 0.7885,
+    "cv_mean": 0.7817000000000001,
+    "cv_std": 0.013735355838128143,
+    "repeated_cv_mean": 0.7798666666666667,
+    "repeated_cv_std": 0.010278564534451754,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.8405797101449275,
+        "recall": 0.6050670640834576,
+        "f1": 0.7036395147313691,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6611764705882353,
+        "recall": 0.8528072837632777,
+        "f1": 0.7448641484426772,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.9130434782608695,
+        "recall": 0.908955223880597,
+        "f1": 0.9109947643979057,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 3,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_poly2_nc3_diag_reg1e-06",
+    "valid_accuracy": 0.7055,
+    "cv_mean": 0.7091000000000001,
+    "cv_std": 0.005544366510251672,
+    "repeated_cv_mean": 0.7071,
+    "repeated_cv_std": 0.009719739365504278,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.6331269349845201,
+        "recall": 0.6095380029806259,
+        "f1": 0.6211085801063022,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6506189821182944,
+        "recall": 0.7177541729893778,
+        "f1": 0.6825396825396826,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8437001594896332,
+        "recall": 0.7895522388059701,
+        "f1": 0.8157286044718581,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 3,
+      "covariance_type": "diag",
+      "random_state": 42,
+      "reg_covar": 1e-06,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_poly2_nc3_diag_reg0.0001",
+    "valid_accuracy": 0.7055,
+    "cv_mean": 0.7099,
+    "cv_std": 0.00613514466007118,
+    "repeated_cv_mean": 0.7086000000000002,
+    "repeated_cv_std": 0.010696105210153191,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.6345256609642301,
+        "recall": 0.6080476900149031,
+        "f1": 0.6210045662100456,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6510989010989011,
+        "recall": 0.7192716236722306,
+        "f1": 0.6834895457822638,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8410174880763116,
+        "recall": 0.7895522388059701,
+        "f1": 0.8144726712856043,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 3,
+      "covariance_type": "diag",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_poly2_nc3_diag_reg0.001",
+    "valid_accuracy": 0.707,
+    "cv_mean": 0.7062000000000002,
+    "cv_std": 0.004749736834815167,
+    "repeated_cv_mean": 0.7072999999999999,
+    "repeated_cv_std": 0.012221292893961747,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.6420722135007849,
+        "recall": 0.6095380029806259,
+        "f1": 0.6253822629969419,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6472184531886025,
+        "recall": 0.723823975720789,
+        "f1": 0.6833810888252149,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8434504792332268,
+        "recall": 0.7880597014925373,
+        "f1": 0.8148148148148148,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 3,
+      "covariance_type": "diag",
+      "random_state": 42,
+      "reg_covar": 0.001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_poly2_nc4_full_reg1e-06",
+    "valid_accuracy": 0.761,
+    "cv_mean": 0.7658999999999999,
+    "cv_std": 0.010942577392918013,
+    "repeated_cv_mean": 0.7659,
+    "repeated_cv_std": 0.0092126724316744,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.7797270955165692,
+        "recall": 0.5961251862891207,
+        "f1": 0.6756756756756757,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6346381969157769,
+        "recall": 0.8118361153262519,
+        "f1": 0.7123834886817576,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.9114906832298136,
+        "recall": 0.8761194029850746,
+        "f1": 0.893455098934551,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 4,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 1e-06,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_poly2_nc4_full_reg0.0001",
+    "valid_accuracy": 0.766,
+    "cv_mean": 0.7694,
+    "cv_std": 0.01077682699128088,
+    "repeated_cv_mean": 0.7712999999999998,
+    "repeated_cv_std": 0.01022382837623299,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.776937618147448,
+        "recall": 0.6125186289120715,
+        "f1": 0.685,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6457831325301204,
+        "recall": 0.8133535660091047,
+        "f1": 0.7199462726662189,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.9126365054602185,
+        "recall": 0.8731343283582089,
+        "f1": 0.8924485125858124,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 4,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_poly2_nc4_full_reg0.001",
+    "valid_accuracy": 0.7705,
+    "cv_mean": 0.7746000000000001,
+    "cv_std": 0.012187698716328719,
+    "repeated_cv_mean": 0.7744,
+    "repeated_cv_std": 0.009978643862436102,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.7745098039215687,
+        "recall": 0.5886736214605067,
+        "f1": 0.6689246401354784,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6601941747572816,
+        "recall": 0.8254931714719271,
+        "f1": 0.7336480107889414,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.9039039039039038,
+        "recall": 0.8985074626865671,
+        "f1": 0.9011976047904192,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 4,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_poly2_nc4_diag_reg1e-06",
+    "valid_accuracy": 0.738,
+    "cv_mean": 0.7232,
+    "cv_std": 0.008447484832777158,
+    "repeated_cv_mean": 0.7301,
+    "repeated_cv_std": 0.013131641176943563,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.7422480620155039,
+        "recall": 0.5707898658718331,
+        "f1": 0.645324347093513,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6966618287373004,
+        "recall": 0.7283763277693475,
+        "f1": 0.712166172106825,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.7710691823899372,
+        "recall": 0.9149253731343283,
+        "f1": 0.8368600682593856,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 4,
+      "covariance_type": "diag",
+      "random_state": 42,
+      "reg_covar": 1e-06,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_poly2_nc4_diag_reg0.0001",
+    "valid_accuracy": 0.738,
+    "cv_mean": 0.7234999999999999,
+    "cv_std": 0.00938083151964686,
+    "repeated_cv_mean": 0.7298666666666667,
+    "repeated_cv_std": 0.013373439680534291,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.7413127413127413,
+        "recall": 0.5722801788375559,
+        "f1": 0.6459209419680404,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6962209302325582,
+        "recall": 0.7268588770864947,
+        "f1": 0.7112100965107646,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.7720403022670025,
+        "recall": 0.9149253731343283,
+        "f1": 0.837431693989071,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 4,
+      "covariance_type": "diag",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_poly2_nc4_diag_reg0.001",
+    "valid_accuracy": 0.7405,
+    "cv_mean": 0.7234999999999999,
+    "cv_std": 0.011220516922138662,
+    "repeated_cv_mean": 0.7300666666666668,
+    "repeated_cv_std": 0.01533391303252006,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.748062015503876,
+        "recall": 0.5752608047690015,
+        "f1": 0.6503791069924179,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6982507288629738,
+        "recall": 0.7268588770864947,
+        "f1": 0.7122676579925651,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.7719298245614035,
+        "recall": 0.9194029850746268,
+        "f1": 0.8392370572207084,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 4,
+      "covariance_type": "diag",
+      "random_state": 42,
+      "reg_covar": 0.001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_pc_1_4_4",
+    "valid_accuracy": 0.709,
+    "cv_mean": 0.7202,
+    "cv_std": 0.006667833231267877,
+    "repeated_cv_mean": 0.7221666666666666,
+    "repeated_cv_std": 0.006230748127008698,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.9237668161434978,
+        "recall": 0.30700447093889716,
+        "f1": 0.4608501118568233,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.5710280373831775,
+        "recall": 0.9271623672230652,
+        "f1": 0.706766917293233,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8500707213578501,
+        "recall": 0.8970149253731343,
+        "f1": 0.8729121278140886,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 1,
+      "class_n_components_1": 4,
+      "class_n_components_2": 4,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_pc_1_4_6",
+    "valid_accuracy": 0.723,
+    "cv_mean": 0.7373,
+    "cv_std": 0.005600000000000005,
+    "repeated_cv_mean": 0.7368,
+    "repeated_cv_std": 0.0066226882759193835,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.933649289099526,
+        "recall": 0.293591654247392,
+        "f1": 0.4467120181405896,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.5855072463768116,
+        "recall": 0.9195751138088012,
+        "f1": 0.7154663518299882,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8527851458885941,
+        "recall": 0.9597014925373134,
+        "f1": 0.9030898876404494,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 1,
+      "class_n_components_1": 4,
+      "class_n_components_2": 6,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_pc_1_4_7",
+    "valid_accuracy": 0.7295,
+    "cv_mean": 0.7339,
+    "cv_std": 0.004789572005931246,
+    "repeated_cv_mean": 0.7301000000000001,
+    "repeated_cv_std": 0.009943507094246658,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.9369369369369369,
+        "recall": 0.30998509687034276,
+        "f1": 0.4658454647256439,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.5911764705882353,
+        "recall": 0.9150227617602428,
+        "f1": 0.7182846932698035,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8548812664907651,
+        "recall": 0.9671641791044776,
+        "f1": 0.907563025210084,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 1,
+      "class_n_components_1": 4,
+      "class_n_components_2": 7,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_pc_1_6_4",
+    "valid_accuracy": 0.6945,
+    "cv_mean": 0.6946999999999999,
+    "cv_std": 0.004600000000000025,
+    "repeated_cv_mean": 0.6958666666666667,
+    "repeated_cv_std": 0.007095695095541303,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.9633507853403142,
+        "recall": 0.27421758569299554,
+        "f1": 0.42691415313225056,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.5532102022867195,
+        "recall": 0.9544764795144158,
+        "f1": 0.700445434298441,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8571428571428571,
+        "recall": 0.8597014925373134,
+        "f1": 0.8584202682563339,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 1,
+      "class_n_components_1": 6,
+      "class_n_components_2": 4,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_pc_1_6_6",
+    "valid_accuracy": 0.7195,
+    "cv_mean": 0.7218,
+    "cv_std": 0.009276852914647315,
+    "repeated_cv_mean": 0.7204666666666667,
+    "repeated_cv_std": 0.009131386653856162,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.968421052631579,
+        "recall": 0.27421758569299554,
+        "f1": 0.4274099883855981,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.5789473684210527,
+        "recall": 0.9347496206373292,
+        "f1": 0.7150319210679048,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8565683646112601,
+        "recall": 0.9537313432835821,
+        "f1": 0.902542372881356,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 1,
+      "class_n_components_1": 6,
+      "class_n_components_2": 6,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_pc_1_6_7",
+    "valid_accuracy": 0.7255,
+    "cv_mean": 0.7222,
+    "cv_std": 0.009749871794028918,
+    "repeated_cv_mean": 0.7188333333333332,
+    "repeated_cv_std": 0.010301564066792125,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.9693877551020408,
+        "recall": 0.28315946348733234,
+        "f1": 0.43829296424452135,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.5864374403056352,
+        "recall": 0.9317147192716236,
+        "f1": 0.7198124267291911,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8546895640686922,
+        "recall": 0.9656716417910448,
+        "f1": 0.9067974772249474,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 1,
+      "class_n_components_1": 6,
+      "class_n_components_2": 7,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_pc_1_8_4",
+    "valid_accuracy": 0.6745,
+    "cv_mean": 0.6799,
+    "cv_std": 0.00835703296631048,
+    "repeated_cv_mean": 0.6828,
+    "repeated_cv_std": 0.008878438301112802,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.9464285714285714,
+        "recall": 0.23695976154992549,
+        "f1": 0.37902264600715135,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.5313559322033898,
+        "recall": 0.9514415781487102,
+        "f1": 0.6818923327895595,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8634969325153374,
+        "recall": 0.8402985074626865,
+        "f1": 0.8517397881996974,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 1,
+      "class_n_components_1": 8,
+      "class_n_components_2": 4,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_pc_1_8_6",
+    "valid_accuracy": 0.702,
+    "cv_mean": 0.7068000000000001,
+    "cv_std": 0.013332666649999169,
+    "repeated_cv_mean": 0.7062,
+    "repeated_cv_std": 0.010148563116684713,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.9467455621301775,
+        "recall": 0.23845007451564829,
+        "f1": 0.38095238095238093,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.5569620253164557,
+        "recall": 0.9347496206373292,
+        "f1": 0.6980169971671388,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8662068965517241,
+        "recall": 0.9373134328358209,
+        "f1": 0.9003584229390681,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 1,
+      "class_n_components_1": 8,
+      "class_n_components_2": 6,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_pc_1_8_7",
+    "valid_accuracy": 0.707,
+    "cv_mean": 0.7091000000000001,
+    "cv_std": 0.015249262277238216,
+    "repeated_cv_mean": 0.7083666666666668,
+    "repeated_cv_std": 0.012814661741753297,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.9545454545454546,
+        "recall": 0.2503725782414307,
+        "f1": 0.39669421487603307,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.5597082953509571,
+        "recall": 0.9317147192716236,
+        "f1": 0.6993166287015945,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8693259972489684,
+        "recall": 0.9432835820895522,
+        "f1": 0.9047959914101646,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 1,
+      "class_n_components_1": 8,
+      "class_n_components_2": 7,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_pc_2_4_4",
+    "valid_accuracy": 0.7325,
+    "cv_mean": 0.74,
+    "cv_std": 0.010709808588392256,
+    "repeated_cv_mean": 0.7423333333333333,
+    "repeated_cv_std": 0.007372622027172956,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.8683385579937304,
+        "recall": 0.4128166915052161,
+        "f1": 0.5595959595959596,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.5935613682092555,
+        "recall": 0.8952959028831563,
+        "f1": 0.7138535995160314,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8704512372634643,
+        "recall": 0.8925373134328358,
+        "f1": 0.8813559322033898,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 2,
+      "class_n_components_1": 4,
+      "class_n_components_2": 4,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_pc_2_4_6",
+    "valid_accuracy": 0.7425,
+    "cv_mean": 0.7548999999999999,
+    "cv_std": 0.008039900496896716,
+    "repeated_cv_mean": 0.7537,
+    "repeated_cv_std": 0.007604384700070513,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.8805460750853242,
+        "recall": 0.38450074515648286,
+        "f1": 0.5352697095435685,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6128016789087093,
+        "recall": 0.8861911987860395,
+        "f1": 0.7245657568238213,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8527851458885941,
+        "recall": 0.9597014925373134,
+        "f1": 0.9030898876404494,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 2,
+      "class_n_components_1": 4,
+      "class_n_components_2": 6,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_pc_2_4_7",
+    "valid_accuracy": 0.746,
+    "cv_mean": 0.7524,
+    "cv_std": 0.007838367176906147,
+    "repeated_cv_mean": 0.7495999999999999,
+    "repeated_cv_std": 0.010633594563144345,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.8825503355704698,
+        "recall": 0.3919523099850969,
+        "f1": 0.542827657378741,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6194029850746269,
+        "recall": 0.881638846737481,
+        "f1": 0.7276142767689417,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8481675392670157,
+        "recall": 0.9671641791044776,
+        "f1": 0.9037656903765691,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 2,
+      "class_n_components_1": 4,
+      "class_n_components_2": 7,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_pc_2_6_4",
+    "valid_accuracy": 0.719,
+    "cv_mean": 0.7197000000000001,
+    "cv_std": 0.005608921464952085,
+    "repeated_cv_mean": 0.7201,
+    "repeated_cv_std": 0.007271405182860708,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.9084249084249084,
+        "recall": 0.36959761549925485,
+        "f1": 0.5254237288135594,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.5710332103321033,
+        "recall": 0.9393019726858877,
+        "f1": 0.7102696500286861,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8880248833592534,
+        "recall": 0.8522388059701492,
+        "f1": 0.8697638994668697,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 2,
+      "class_n_components_1": 6,
+      "class_n_components_2": 4,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_pc_2_6_6",
+    "valid_accuracy": 0.743,
+    "cv_mean": 0.7446999999999999,
+    "cv_std": 0.009836666101886358,
+    "repeated_cv_mean": 0.7424,
+    "repeated_cv_std": 0.009520504188329535,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.9310344827586207,
+        "recall": 0.3621460506706408,
+        "f1": 0.5214592274678111,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6046046046046046,
+        "recall": 0.9165402124430956,
+        "f1": 0.7285886610373945,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8635135135135135,
+        "recall": 0.9537313432835821,
+        "f1": 0.9063829787234042,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 2,
+      "class_n_components_1": 6,
+      "class_n_components_2": 6,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_pc_2_6_7",
+    "valid_accuracy": 0.7425,
+    "cv_mean": 0.7436,
+    "cv_std": 0.007989993742175266,
+    "repeated_cv_mean": 0.7407666666666665,
+    "repeated_cv_std": 0.009530419135006022,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.9294117647058824,
+        "recall": 0.353204172876304,
+        "f1": 0.5118790496760259,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6099290780141844,
+        "recall": 0.91350531107739,
+        "f1": 0.7314702308626975,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8522427440633246,
+        "recall": 0.9641791044776119,
+        "f1": 0.9047619047619048,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 2,
+      "class_n_components_1": 6,
+      "class_n_components_2": 7,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_pc_2_8_4",
+    "valid_accuracy": 0.6985,
+    "cv_mean": 0.7001000000000001,
+    "cv_std": 0.007863841300535,
+    "repeated_cv_mean": 0.7030666666666666,
+    "repeated_cv_std": 0.010122362482257893,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.9083333333333333,
+        "recall": 0.32488822652757077,
+        "f1": 0.47859495060373214,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.5472197705207414,
+        "recall": 0.9408194233687405,
+        "f1": 0.6919642857142857,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8915470494417863,
+        "recall": 0.8343283582089552,
+        "f1": 0.8619892058596762,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 2,
+      "class_n_components_1": 8,
+      "class_n_components_2": 4,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_pc_2_8_6",
+    "valid_accuracy": 0.7195,
+    "cv_mean": 0.726,
+    "cv_std": 0.014882876066137246,
+    "repeated_cv_mean": 0.7250666666666667,
+    "repeated_cv_std": 0.012113170059438997,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.9147982062780269,
+        "recall": 0.30402384500745155,
+        "f1": 0.4563758389261745,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.5764482431149098,
+        "recall": 0.921092564491654,
+        "f1": 0.7091121495327103,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8674033149171271,
+        "recall": 0.9373134328358209,
+        "f1": 0.9010043041606887,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 2,
+      "class_n_components_1": 8,
+      "class_n_components_2": 6,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_pc_2_8_7",
+    "valid_accuracy": 0.7195,
+    "cv_mean": 0.7273,
+    "cv_std": 0.011469960767151746,
+    "repeated_cv_mean": 0.7271000000000001,
+    "repeated_cv_std": 0.01284419453813019,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.918918918918919,
+        "recall": 0.30402384500745155,
+        "f1": 0.4568868980963046,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.5778414517669532,
+        "recall": 0.9180576631259484,
+        "f1": 0.7092614302461899,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8618331053351573,
+        "recall": 0.9402985074626866,
+        "f1": 0.8993576017130621,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 2,
+      "class_n_components_1": 8,
+      "class_n_components_2": 7,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_offset_0.05_0.15_0.0",
+    "valid_accuracy": 0.724,
+    "cv_mean": 0.7205,
+    "cv_std": 0.009853933224860011,
+    "repeated_cv_mean": 0.7174999999999999,
+    "repeated_cv_std": 0.010211105065891096,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.9689119170984456,
+        "recall": 0.2786885245901639,
+        "f1": 0.43287037037037035,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.5836501901140685,
+        "recall": 0.9317147192716236,
+        "f1": 0.7177089421391,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.856953642384106,
+        "recall": 0.9656716417910448,
+        "f1": 0.9080701754385965,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 1,
+      "class_n_components_1": 6,
+      "class_n_components_2": 7,
+      "class_offset_0": 0.05,
+      "class_offset_1": 0.15,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_offset_0.1_0.2_0.0",
+    "valid_accuracy": 0.724,
+    "cv_mean": 0.7202999999999999,
+    "cv_std": 0.009775479527879974,
+    "repeated_cv_mean": 0.7175333333333334,
+    "repeated_cv_std": 0.01017917263610141,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.9689119170984456,
+        "recall": 0.2786885245901639,
+        "f1": 0.43287037037037035,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.5836501901140685,
+        "recall": 0.9317147192716236,
+        "f1": 0.7177089421391,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.856953642384106,
+        "recall": 0.9656716417910448,
+        "f1": 0.9080701754385965,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 1,
+      "class_n_components_1": 6,
+      "class_n_components_2": 7,
+      "class_offset_0": 0.1,
+      "class_offset_1": 0.2,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_offset_0.0_0.1_-0.05",
+    "valid_accuracy": 0.724,
+    "cv_mean": 0.7205,
+    "cv_std": 0.009853933224860011,
+    "repeated_cv_mean": 0.7174999999999999,
+    "repeated_cv_std": 0.010211105065891096,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.9689119170984456,
+        "recall": 0.2786885245901639,
+        "f1": 0.43287037037037035,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.5836501901140685,
+        "recall": 0.9317147192716236,
+        "f1": 0.7177089421391,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.856953642384106,
+        "recall": 0.9656716417910448,
+        "f1": 0.9080701754385965,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 1,
+      "class_n_components_1": 6,
+      "class_n_components_2": 7,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.1,
+      "class_offset_2": -0.05,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_offset_0.08_0.18_0.02",
+    "valid_accuracy": 0.724,
+    "cv_mean": 0.7204,
+    "cv_std": 0.009718024490605088,
+    "repeated_cv_mean": 0.7175,
+    "repeated_cv_std": 0.010181682899534186,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.9689119170984456,
+        "recall": 0.2786885245901639,
+        "f1": 0.43287037037037035,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.5836501901140685,
+        "recall": 0.9317147192716236,
+        "f1": 0.7177089421391,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.856953642384106,
+        "recall": 0.9656716417910448,
+        "f1": 0.9080701754385965,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 1,
+      "class_n_components_1": 6,
+      "class_n_components_2": 7,
+      "class_offset_0": 0.08,
+      "class_offset_1": 0.18,
+      "class_offset_2": 0.02,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_offset_0.03_0.12_-0.02",
+    "valid_accuracy": 0.724,
+    "cv_mean": 0.7205999999999999,
+    "cv_std": 0.00971287804927048,
+    "repeated_cv_mean": 0.7176333333333335,
+    "repeated_cv_std": 0.010124996570644144,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.9689119170984456,
+        "recall": 0.2786885245901639,
+        "f1": 0.43287037037037035,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.5836501901140685,
+        "recall": 0.9317147192716236,
+        "f1": 0.7177089421391,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.856953642384106,
+        "recall": 0.9656716417910448,
+        "f1": 0.9080701754385965,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 1,
+      "class_n_components_1": 6,
+      "class_n_components_2": 7,
+      "class_offset_0": 0.03,
+      "class_offset_1": 0.12,
+      "class_offset_2": -0.02,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A1_offset_0.06_0.16_0.01",
+    "valid_accuracy": 0.724,
+    "cv_mean": 0.7205,
+    "cv_std": 0.009853933224860011,
+    "repeated_cv_mean": 0.7174999999999999,
+    "repeated_cv_std": 0.010211105065891096,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.9689119170984456,
+        "recall": 0.2786885245901639,
+        "f1": 0.43287037037037035,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.5836501901140685,
+        "recall": 0.9317147192716236,
+        "f1": 0.7177089421391,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.856953642384106,
+        "recall": 0.9656716417910448,
+        "f1": 0.9080701754385965,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "none",
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": 1,
+      "class_n_components_1": 6,
+      "class_n_components_2": 7,
+      "class_offset_0": 0.06,
+      "class_offset_1": 0.16,
+      "class_offset_2": 0.01,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A2_pca2_gmm2",
+    "valid_accuracy": 0.7395,
+    "cv_mean": 0.7451000000000001,
+    "cv_std": 0.011521284650593428,
+    "repeated_cv_mean": 0.7450666666666665,
+    "repeated_cv_std": 0.007882188077487664,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.6861598440545809,
+        "recall": 0.5245901639344263,
+        "f1": 0.5945945945945946,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6575342465753424,
+        "recall": 0.7283763277693475,
+        "f1": 0.6911447084233261,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8546895640686922,
+        "recall": 0.9656716417910448,
+        "f1": 0.9067974772249474,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "pca",
+      "transformer_n_components": 2,
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3"
+      ]
+    }
+  },
+  {
+    "name": "A2_pca2_gmm3",
+    "valid_accuracy": 0.733,
+    "cv_mean": 0.7428000000000001,
+    "cv_std": 0.01259603112095234,
+    "repeated_cv_mean": 0.7437000000000001,
+    "repeated_cv_std": 0.008009993757800312,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.6698473282442748,
+        "recall": 0.5230998509687034,
+        "f1": 0.5874476987447699,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.651685393258427,
+        "recall": 0.7040971168437026,
+        "f1": 0.6768781911013858,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8520942408376964,
+        "recall": 0.9716417910447761,
+        "f1": 0.9079497907949791,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "pca",
+      "transformer_n_components": 2,
+      "n_components": 3,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3"
+      ]
+    }
+  },
+  {
+    "name": "A2_pca2_gmm4",
+    "valid_accuracy": 0.7385,
+    "cv_mean": 0.744,
+    "cv_std": 0.012868566353716304,
+    "repeated_cv_mean": 0.7437000000000001,
+    "repeated_cv_std": 0.008439589247508816,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.6715063520871143,
+        "recall": 0.5514157973174366,
+        "f1": 0.6055646481178396,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6642547033285094,
+        "recall": 0.6965098634294385,
+        "f1": 0.68,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8548812664907651,
+        "recall": 0.9671641791044776,
+        "f1": 0.907563025210084,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "pca",
+      "transformer_n_components": 2,
+      "n_components": 4,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3"
+      ]
+    }
+  },
+  {
+    "name": "A2_pca3_gmm2",
+    "valid_accuracy": 0.8145,
+    "cv_mean": 0.8106,
+    "cv_std": 0.010580170130957247,
+    "repeated_cv_mean": 0.8114666666666667,
+    "repeated_cv_std": 0.007294899283441505,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.8288973384030418,
+        "recall": 0.6497764530551415,
+        "f1": 0.7284878863826232,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.7161458333333334,
+        "recall": 0.834597875569044,
+        "f1": 0.7708479327259986,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.9107648725212465,
+        "recall": 0.9597014925373134,
+        "f1": 0.934593023255814,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "pca",
+      "transformer_n_components": 3,
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3"
+      ]
+    }
+  },
+  {
+    "name": "A2_pca3_gmm3",
+    "valid_accuracy": 0.812,
+    "cv_mean": 0.8113000000000001,
+    "cv_std": 0.011630133275246672,
+    "repeated_cv_mean": 0.8103666666666666,
+    "repeated_cv_std": 0.00778773965209988,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.8210922787193974,
+        "recall": 0.6497764530551415,
+        "f1": 0.7254575707154742,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.7135348226018396,
+        "recall": 0.8239757207890743,
+        "f1": 0.7647887323943662,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.9110169491525424,
+        "recall": 0.9626865671641791,
+        "f1": 0.9361393323657474,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "pca",
+      "transformer_n_components": 3,
+      "n_components": 3,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3"
+      ]
+    }
+  },
+  {
+    "name": "A2_pca3_gmm4",
+    "valid_accuracy": 0.812,
+    "cv_mean": 0.8109,
+    "cv_std": 0.01137717012266229,
+    "repeated_cv_mean": 0.8104333333333333,
+    "repeated_cv_std": 0.007288956639251501,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.8223062381852552,
+        "recall": 0.6482861400894188,
+        "f1": 0.725,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.7127937336814621,
+        "recall": 0.8285280728376327,
+        "f1": 0.7663157894736842,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.9120567375886525,
+        "recall": 0.9597014925373134,
+        "f1": 0.9352727272727273,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "pca",
+      "transformer_n_components": 3,
+      "n_components": 4,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3"
+      ]
+    }
+  },
+  {
+    "name": "A2_ica2_gmm2",
+    "valid_accuracy": 0.739,
+    "cv_mean": 0.7448,
+    "cv_std": 0.011591376104673659,
+    "repeated_cv_mean": 0.7448333333333336,
+    "repeated_cv_std": 0.007921840414673555,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.6877470355731226,
+        "recall": 0.518628912071535,
+        "f1": 0.5913338997451147,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6535859269282814,
+        "recall": 0.7329286798179059,
+        "f1": 0.6909871244635193,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.856953642384106,
+        "recall": 0.9656716417910448,
+        "f1": 0.9080701754385965,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "ica",
+      "transformer_n_components": 2,
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3"
+      ]
+    }
+  },
+  {
+    "name": "A2_ica2_gmm3",
+    "valid_accuracy": 0.735,
+    "cv_mean": 0.7416,
+    "cv_std": 0.012411285187280153,
+    "repeated_cv_mean": 0.7423666666666667,
+    "repeated_cv_std": 0.007768454729795929,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.6710526315789473,
+        "recall": 0.5320417287630402,
+        "f1": 0.5935162094763092,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.65625,
+        "recall": 0.701062215477997,
+        "f1": 0.677916360968452,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8520942408376964,
+        "recall": 0.9716417910447761,
+        "f1": 0.9079497907949791,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "ica",
+      "transformer_n_components": 2,
+      "n_components": 3,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3"
+      ]
+    }
+  },
+  {
+    "name": "A2_ica2_gmm4",
+    "valid_accuracy": 0.7365,
+    "cv_mean": 0.7422000000000001,
+    "cv_std": 0.013162826444195034,
+    "repeated_cv_mean": 0.743,
+    "repeated_cv_std": 0.008087026647662296,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.6678765880217786,
+        "recall": 0.5484351713859911,
+        "f1": 0.602291325695581,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.6613603473227206,
+        "recall": 0.6934749620637329,
+        "f1": 0.677037037037037,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8548812664907651,
+        "recall": 0.9671641791044776,
+        "f1": 0.907563025210084,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "ica",
+      "transformer_n_components": 2,
+      "n_components": 4,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3"
+      ]
+    }
+  },
+  {
+    "name": "A2_ica3_gmm2",
+    "valid_accuracy": 0.813,
+    "cv_mean": 0.8112,
+    "cv_std": 0.010404806581575632,
+    "repeated_cv_mean": 0.8116,
+    "repeated_cv_std": 0.006631239200431028,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.8291746641074856,
+        "recall": 0.6438152011922503,
+        "f1": 0.7248322147651006,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.7128072445019404,
+        "recall": 0.8361153262518968,
+        "f1": 0.7695530726256983,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.9107648725212465,
+        "recall": 0.9597014925373134,
+        "f1": 0.934593023255814,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "ica",
+      "transformer_n_components": 3,
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3"
+      ]
+    }
+  },
+  {
+    "name": "A2_ica3_gmm3",
+    "valid_accuracy": 0.8115,
+    "cv_mean": 0.8102,
+    "cv_std": 0.009064215354899739,
+    "repeated_cv_mean": 0.8097,
+    "repeated_cv_std": 0.006446704584514476,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.8207547169811321,
+        "recall": 0.6482861400894188,
+        "f1": 0.7243963363863447,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.7135348226018396,
+        "recall": 0.8239757207890743,
+        "f1": 0.7647887323943662,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.9097320169252469,
+        "recall": 0.9626865671641791,
+        "f1": 0.9354604786076868,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "ica",
+      "transformer_n_components": 3,
+      "n_components": 3,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3"
+      ]
+    }
+  },
+  {
+    "name": "A2_ica3_gmm4",
+    "valid_accuracy": 0.8135,
+    "cv_mean": 0.8107000000000001,
+    "cv_std": 0.011985824961178086,
+    "repeated_cv_mean": 0.8101666666666668,
+    "repeated_cv_std": 0.007676081176109463,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.8217636022514071,
+        "recall": 0.6527570789865872,
+        "f1": 0.7275747508305648,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.7171052631578947,
+        "recall": 0.8270106221547799,
+        "f1": 0.7681465821000705,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.9108910891089109,
+        "recall": 0.9611940298507463,
+        "f1": 0.9353667392883079,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "ica",
+      "transformer_n_components": 3,
+      "n_components": 4,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3"
+      ]
+    }
+  },
+  {
+    "name": "A2c_pca3_poly2_gmm2",
+    "valid_accuracy": 0.8075,
+    "cv_mean": 0.8073,
+    "cv_std": 0.010519505691808895,
+    "repeated_cv_mean": 0.8068666666666668,
+    "repeated_cv_std": 0.007319987856699094,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.823076923076923,
+        "recall": 0.6378539493293591,
+        "f1": 0.7187237615449202,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.7159841479524438,
+        "recall": 0.8224582701062215,
+        "f1": 0.7655367231638418,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.8921161825726142,
+        "recall": 0.9626865671641791,
+        "f1": 0.9260588657573582,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "pca",
+      "transformer_n_components": 3,
+      "n_components": 2,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A2c_pca3_poly2_gmm3",
+    "valid_accuracy": 0.8125,
+    "cv_mean": 0.8112999999999999,
+    "cv_std": 0.011448143954370944,
+    "repeated_cv_mean": 0.8119999999999998,
+    "repeated_cv_std": 0.007264066813202275,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.8266666666666667,
+        "recall": 0.646795827123696,
+        "f1": 0.725752508361204,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.7154046997389034,
+        "recall": 0.8315629742033384,
+        "f1": 0.7691228070175439,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.9069111424541608,
+        "recall": 0.9597014925373134,
+        "f1": 0.9325598259608412,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "pca",
+      "transformer_n_components": 3,
+      "n_components": 3,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  },
+  {
+    "name": "A2c_pca3_poly2_gmm4",
+    "valid_accuracy": 0.813,
+    "cv_mean": 0.8103,
+    "cv_std": 0.01236365641709603,
+    "repeated_cv_mean": 0.8114666666666667,
+    "repeated_cv_std": 0.007329089681232959,
+    "class_metrics": [
+      {
+        "class": 0,
+        "precision": 0.8273244781783681,
+        "recall": 0.6497764530551415,
+        "f1": 0.7278797996661102,
+        "support": 671
+      },
+      {
+        "class": 1,
+        "precision": 0.7135416666666666,
+        "recall": 0.8315629742033384,
+        "f1": 0.7680448493342676,
+        "support": 659
+      },
+      {
+        "class": 2,
+        "precision": 0.9106382978723404,
+        "recall": 0.9582089552238806,
+        "f1": 0.9338181818181818,
+        "support": 670
+      }
+    ],
+    "config": {
+      "transformer_type": "pca",
+      "transformer_n_components": 3,
+      "n_components": 4,
+      "covariance_type": "full",
+      "random_state": 42,
+      "reg_covar": 0.0001,
+      "n_init": 3,
+      "max_iter": 500,
+      "class_n_components_0": null,
+      "class_n_components_1": null,
+      "class_n_components_2": null,
+      "class_offset_0": 0.0,
+      "class_offset_1": 0.0,
+      "class_offset_2": 0.0,
+      "feature_names": [
+        "Feature_1",
+        "Feature_2",
+        "Feature_3",
+        "Feature_1^2",
+        "Feature_1 Feature_2",
+        "Feature_1 Feature_3",
+        "Feature_2^2",
+        "Feature_2 Feature_3",
+        "Feature_3^2"
+      ]
+    }
+  }
+]

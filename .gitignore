@@ -1,53 +1,322 @@
-# Python
+# ===================================================================
+# items_1 项目 .gitignore
+# 项目整理后重新配置
+# ===================================================================
+
+# ===================================================================
+# Python 缓存和编译文件
+# ===================================================================
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+*.pyd
 .Python
+*.pyc
+*.pyo
+*.pyd
+
+# 虚拟环境
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# 构建和分发
 build/
 develop-eggs/
 dist/
 downloads/
 eggs/
 .eggs/
+*.egg
+*.egg-info/
+.installed.cfg
 lib/
 lib64/
 parts/
 sdist/
 var/
 wheels/
-*.egg-info/
-.installed.cfg
-*.egg
+pip-wheel-metadata/
+share/python-wheels/
 
-# Virtual environments
-.env
-.venv
-env/
-venv/
-ENV/
+# pytest
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+*.cover
+*.log
+.pytest_cache/
+.tox/
+.hypothesis/
 
-# IDE
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb
+
+# ===================================================================
+# IDE 配置 - 但保留项目配置
+# ===================================================================
 .vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
 .idea/
 *.swp
 *.swo
 *~
-
-# OS
 .DS_Store
 Thumbs.db
+desktop.ini
+ehthumbs.db
 
-# Claude Code / AI tools
+# ===================================================================
+# AI 工具配置 - 保留 Trae 配置但排除缓存
+# ===================================================================
+.trae/
+!.trae/rules/
+!.trae/snippets/
+!.trae/templates/
+!.trae/ai_context/
+!.trae/settings.json
+!.trae/shortcuts.json
+!.trae/argv.json
+!.trae/FILES_INDEX.md
+!.trae/QUICK_REFERENCE.md
+.trae/__pycache__/
+.trae/logs/
+.trae/CachedExtensions/
+.trae/CachedData/
+.trae/Cache/
+
 .claude/
 .opencode/
-.trae/
-AGENTS.md
-VIBE_CODING_SETUP.md
-quick_commands.sh
-switch_env.ps1
-.gitconfig
 
-# Local configs
+# ===================================================================
+# 项目特定的 Git 配置 (本地使用)
+# ===================================================================
+.gitconfig
+.gitlocal
+.local
 *.local
+
+# ===================================================================
+# 敏感信息和密钥
+# ===================================================================
+.env
+.env.local
+.env.*.local
+secrets.json
+credentials.json
+*.pem
+*.key
+*.p12
+*.pfx
+api_key*
+token*
+secret*
+
+# ===================================================================
+# 大文件和模型权重
+# ===================================================================
+*.pth
+*.pt
+*.ckpt
+*.h5
+*.pkl
+*.pytorch
+*.onnx
+*.pb
+*.tflite
+
+# 预训练模型
+checkpoints/
+models/
+pretrained/
+weights/
+*.bin
+*.safetensors
+
+# 数据集
+datasets/
+data/
+*.csv
+*.sqlite
+*.db
+!CSTVR/**/*.db
+!ai_test_1/**/*.db
+
+# 视频和大型媒体文件
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.flv
+*.wmv
+*.webm
+*.m4v
+*.mpg
+*.mpeg
+
+# 图片 (排除图标和截图)
+*.png
+!CSTVR/pic/*
+!CSTVR_ori/pic/*
+!VLMCompression/code/LLM-Pruner/figures/*
+!ai_test_1/**/*.png
+
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.ico
+
+# 音频
+*.mp3
+*.wav
+*.flac
+*.ogg
+*.m4a
+
+# 压缩文件
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# ===================================================================
+# 论文 PDF (按需取消注释)
+# ===================================================================
+*.pdf
+# !VLMCompression/论文/*.pdf
+# !read_paper/**/*.pdf
+
+# ===================================================================
+# Node.js (前端项目)
+# ===================================================================
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.npm
+.yarn-integrity
+
+# ===================================================================
+# Rust/Cargo
+# ===================================================================
+target/
+Cargo.lock
+
+# ===================================================================
+# Java/Maven
+# ===================================================================
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+
+# ===================================================================
+# LaTeX/TeX
+# ===================================================================
+*.synctex
+*.synctex.gz
+*.synctex.gz(busy)
+*.pdfsync
+*.aux
+*.bbl
+*.bcf
+*.blg
+*-nav.tex
+*.snm
+*.vrb
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+
+# ===================================================================
+# 临时文件
+# ===================================================================
+*.tmp
+*.temp
+*.swp
+*.bak
+*.backup
+*.old
+*~
+.*.swp
+.*.swo
+*___jb_tmp___*
+
+# ===================================================================
+# 日志文件
+# ===================================================================
 *.log
+logs/
+*.log.*
+
+# ===================================================================
+# 操作系统特定
+# ===================================================================
+# macOS
+._*
+
+# Linux
+*~
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_formatted
+*.lnk
+
+# ===================================================================
+# JetBrains
+# ===================================================================
+# Covers JetBrains IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+atlassian-ide-plugin.xml
+
+# ===================================================================
+# 调试文件
+# ===================================================================
+*.pdb
+*.dump
+*.core
+core
+*.stackdump
+
+# ===================================================================
+# Terraform
+# ===================================================================
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.*
+crash.log
+
+# ===================================================================
+# 已忽略的子模块内容 (根据需要调整)
+# ===================================================================
+# VLMCompression/code/ - 包含外部依赖，可能需要特殊处理
+VLMCompression/code/LLM-Pruner/examples/
+VLMCompression/code/LLM-Pruner/llm-pruner-env/
+
+# 论文目录 - 大量 PDF，按需下载
+# read_paper/

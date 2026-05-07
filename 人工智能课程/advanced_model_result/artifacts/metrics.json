@@ -1,0 +1,56 @@
+{
+  "model_name": "gmm_per_class_1_7_11_full_offsets",
+  "description": "Per-class full-covariance GMM with class-specific component counts and fixed additive class log-score offsets.",
+  "model_family": "generative classifier with calibrated decision offsets",
+  "feature_columns": [
+    "Feature_1",
+    "Feature_2",
+    "Feature_3"
+  ],
+  "target_column": "Label",
+  "class_n_components": {
+    "0": 1,
+    "1": 7,
+    "2": 11
+  },
+  "class_offsets": {
+    "0": -0.1,
+    "1": 0.0,
+    "2": 0.0
+  },
+  "train_size": 8000,
+  "valid_size": 2000,
+  "valid_accuracy": 0.8145,
+  "cv_mean_accuracy": 0.8131999999999999,
+  "cv_std_accuracy": 0.011088733020503283,
+  "repeated_cv_mean_accuracy": 0.8130000000000001,
+  "repeated_cv_std_accuracy": 0.0075365774725666985,
+  "baseline_valid_accuracy": 0.815,
+  "baseline_repeated_cv_mean_accuracy": 0.8113,
+  "previous_advanced_repeated_cv_mean_accuracy": 0.8128666666666667,
+  "selection_basis": "Chosen after a focused class 0/1 search; it is the best repeated 5-fold CV result found so far under supervised-only evaluation.",
+  "selection_score": 0.8130000000000001,
+  "valid_class_metrics": [
+    {
+      "class": 0,
+      "precision": 0.837573385518591,
+      "recall": 0.6378539493293591,
+      "f1": 0.7241962774957699,
+      "support": 671
+    },
+    {
+      "class": 1,
+      "precision": 0.7146529562982005,
+      "recall": 0.8437025796661608,
+      "f1": 0.7738343771746694,
+      "support": 659
+    },
+    {
+      "class": 2,
+      "precision": 0.9071729957805907,
+      "recall": 0.9626865671641791,
+      "f1": 0.9341057204923968,
+      "support": 670
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "model_name": "gmm_per_class_1_7_11_full_offsets",
+  "model_description": "Per-class full-covariance GMM with class-specific component counts and fixed additive class log-score offsets.",
+  "feature_columns": [
+    "Feature_1",
+    "Feature_2",
+    "Feature_3"
+  ],
+  "target_column": "Label",
+  "model_parameters": {
+    "class_n_components": {
+      "0": 1,
+      "1": 7,
+      "2": 11
+    },
+    "class_offsets": {
+      "0": -0.1,
+      "1": 0.0,
+      "2": 0.0
+    },
+    "covariance_type": "full",
+    "init_params": "kmeans",
+    "max_iter": 500,
+    "n_components": 2,
+    "n_init": 3,
+    "random_state": 42,
+    "reg_covar": 1e-06
+  },
+  "default_model_file": "final_model.joblib"
+}

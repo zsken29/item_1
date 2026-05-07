@@ -1,0 +1,46 @@
+{
+  "valid_accuracy": 0.815,
+  "cv_mean": 0.8138,
+  "cv_std": 0.0091246917756163,
+  "repeated_cv_mean": 0.8126666666666666,
+  "best_params": {
+    "nc0": 1,
+    "nc1": 10,
+    "nc2": 2,
+    "off0": -0.36791421758018356,
+    "off1": -0.19238683170127072,
+    "off2": -0.009711158716886686,
+    "covariance_type": "full",
+    "reg_covar": 1.9357896506825668e-06,
+    "n_init": 1,
+    "max_iter": 200
+  },
+  "best_5fold_cv": 0.8138,
+  "class_metrics": [
+    {
+      "class": 0,
+      "precision": 0.8476953907815631,
+      "recall": 0.6304023845007451,
+      "f1": 0.7230769230769231,
+      "support": 671
+    },
+    {
+      "class": 1,
+      "precision": 0.712468193384224,
+      "recall": 0.849772382397572,
+      "f1": 0.7750865051903114,
+      "support": 659
+    },
+    {
+      "class": 2,
+      "precision": 0.9048951048951049,
+      "recall": 0.9656716417910448,
+      "f1": 0.9342960288808664,
+      "support": 670
+    }
+  ],
+  "baseline_valid": 0.815,
+  "baseline_repeated_cv": 0.8113,
+  "improvement_valid": 0.0,
+  "improvement_repCV": 0.0013666666666666272
+}

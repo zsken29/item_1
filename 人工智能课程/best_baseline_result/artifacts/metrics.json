@@ -1,0 +1,44 @@
+{
+  "model_name": "gmm_2_full",
+  "description": "每个类别单独训练一个两成分全协方差高斯混合模型。",
+  "model_family": "生成式分类模型",
+  "source_round": "第二轮基线实验",
+  "feature_columns": [
+    "Feature_1",
+    "Feature_2",
+    "Feature_3"
+  ],
+  "target_column": "Label",
+  "train_size": 8000,
+  "valid_size": 2000,
+  "valid_accuracy": 0.815,
+  "cv_mean_accuracy": 0.8107,
+  "cv_std_accuracy": 0.011395613191048553,
+  "repeated_cv_mean_accuracy": 0.8113,
+  "repeated_cv_std_accuracy": 0.007415749006899652,
+  "selection_basis": "5折分层交叉验证重复3次",
+  "selection_score": 0.8113,
+  "valid_class_metrics": [
+    {
+      "类别": 0,
+      "精确率": 0.8292220113851992,
+      "召回率": 0.6512667660208644,
+      "F1": 0.7295492487479132,
+      "样本数": 671
+    },
+    {
+      "类别": 1,
+      "精确率": 0.7161458333333334,
+      "召回率": 0.834597875569044,
+      "F1": 0.7708479327259986,
+      "样本数": 659
+    },
+    {
+      "类别": 2,
+      "精确率": 0.9120567375886525,
+      "召回率": 0.9597014925373134,
+      "F1": 0.9352727272727273,
+      "样本数": 670
+    }
+  ]
+}
